@@ -74,6 +74,7 @@ import com.squareup.picasso.Picasso;
 import com.tylersuehr.socialtextview.SocialTextView;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -1500,7 +1501,11 @@ public class CommentGroupActivity extends AppCompatActivity implements View.OnCl
             retriever.setDataSource(getApplicationContext(), video_uri);
             String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             long timeInMilli = Long.parseLong(time);
-            retriever.release();
+            try {
+                retriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (timeInMilli > 600000){
                 Snackbar.make(main, "Video must be of 10 minutes or less", Snackbar.LENGTH_LONG).show();

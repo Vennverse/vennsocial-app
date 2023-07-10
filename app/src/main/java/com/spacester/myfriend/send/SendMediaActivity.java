@@ -15,6 +15,8 @@ import com.spacester.myfriend.R;
 import com.spacester.myfriend.post.CreatePostActivity;
 import com.spacester.myfriend.reel.VideoEditActivity;
 
+import java.io.IOException;
+
 public class SendMediaActivity extends AppCompatActivity {
 
     NightMode sharedPref;
@@ -67,7 +69,11 @@ public class SendMediaActivity extends AppCompatActivity {
                 retriever.setDataSource(getApplicationContext(), Uri.parse(uri));
                 String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                 long timeInMilli = Long.parseLong(time);
-                retriever.release();
+                try {
+                    retriever.release();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
                 if (timeInMilli > 600000){
                     Snackbar.make(v, "Video must be of 10 minutes or less", Snackbar.LENGTH_LONG).show();
@@ -98,7 +104,11 @@ public class SendMediaActivity extends AppCompatActivity {
             retriever.setDataSource(SendMediaActivity.this, Uri.parse(uri));
             String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             long timeInMilli = Long.parseLong(time);
-            retriever.release();
+            try {
+                retriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (timeInMilli > 60000){
                 Snackbar.make(v, "Video must be of 1 minutes or less", Snackbar.LENGTH_LONG).show();
@@ -118,7 +128,11 @@ public class SendMediaActivity extends AppCompatActivity {
                 retriever.setDataSource(getApplicationContext(), Uri.parse(uri));
                 String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                 long timeInMilli = Long.parseLong(time);
-                retriever.release();
+                try {
+                    retriever.release();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
                 if (timeInMilli > 50000) {
                     Snackbar.make(v, "Video must be of 5 minutes or less", Snackbar.LENGTH_LONG).show();
@@ -144,7 +158,11 @@ public class SendMediaActivity extends AppCompatActivity {
                 retriever.setDataSource(getApplicationContext(), Uri.parse(uri));
                 String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                 long timeInMilli = Long.parseLong(time);
-                retriever.release();
+                try {
+                    retriever.release();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
                 if (timeInMilli > 50000) {
                     Snackbar.make(v, "Video must be of 5 minutes or less", Snackbar.LENGTH_LONG).show();

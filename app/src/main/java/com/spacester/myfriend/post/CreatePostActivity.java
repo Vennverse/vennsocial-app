@@ -64,6 +64,7 @@ import com.spacester.myfriend.watchParty.StartWatchPartyActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Objects;
@@ -804,7 +805,11 @@ public class CreatePostActivity extends AppCompatActivity implements PrivacyPick
             retriever.setDataSource(getApplicationContext(), video_uri);
             String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             long timeInMilli = Long.parseLong(time);
-            retriever.release();
+            try {
+                retriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (timeInMilli > 600000){
                 Snackbar.make(main, "Video must be of 10 minutes or less", Snackbar.LENGTH_LONG).show();
@@ -833,7 +838,11 @@ public class CreatePostActivity extends AppCompatActivity implements PrivacyPick
             retriever.setDataSource(getApplicationContext(), video_uri);
             String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             long timeInMilli = Long.parseLong(time);
-            retriever.release();
+            try {
+                retriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (timeInMilli > 60000){
                 Snackbar.make(findViewById(R.id.main), "Video must be of 1 minutes or less", Snackbar.LENGTH_LONG).show();

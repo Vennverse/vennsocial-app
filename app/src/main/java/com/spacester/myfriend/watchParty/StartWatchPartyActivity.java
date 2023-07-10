@@ -41,6 +41,7 @@ import com.spacester.myfriend.adapter.AdapterPostParty;
 import com.spacester.myfriend.model.ModelPost;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -321,7 +322,11 @@ public class StartWatchPartyActivity extends AppCompatActivity {
             retriever.setDataSource(getApplicationContext(), video_uri);
             String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             long timeInMilli = Long.parseLong(time);
-            retriever.release();
+            try {
+                retriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (timeInMilli > 600000){
                 Snackbar.make(main, "Video must be of 10 minutes or less", Snackbar.LENGTH_LONG).show();

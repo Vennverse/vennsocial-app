@@ -32,6 +32,7 @@ import com.spacester.myfriend.send.VideoEditingActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Objects;
@@ -256,7 +257,11 @@ public class AddStoryActivity extends AppCompatActivity {
                 retriever.setDataSource(getApplicationContext(), selectedMediaUri);
                 String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                 long timeInMilli = Long.parseLong(time);
-                retriever.release();
+                try {
+                    retriever.release();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
                 if (timeInMilli > 30000){
                     Snackbar.make(findViewById(R.id.main), "Video must be of 30 seconds or less", Snackbar.LENGTH_LONG).show();

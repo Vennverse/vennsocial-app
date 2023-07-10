@@ -60,6 +60,7 @@ import com.spacester.myfriend.reel.ViewReelActivity;
 import com.spacester.myfriend.story.AddStoryActivity;
 import com.spacester.myfriend.watchParty.StartWatchPartyActivity;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -624,7 +625,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             retriever.setDataSource(getApplicationContext(), video_uri);
             String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             long timeInMilli = Long.parseLong(time);
-            retriever.release();
+            try {
+                retriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (timeInMilli > 60000){
                 Snackbar.make(findViewById(R.id.main), "Video must be of 1 minutes or less", Snackbar.LENGTH_LONG).show();

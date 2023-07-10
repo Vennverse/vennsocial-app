@@ -44,6 +44,7 @@ import com.spacester.myfriend.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Objects;
@@ -378,7 +379,11 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             retriever.setDataSource(getApplicationContext(), video_uri);
             String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             long timeInMilli = Long.parseLong(time);
-            retriever.release();
+            try {
+                retriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (timeInMilli > 7000){
                 Snackbar.make(main, "Cover video must be of 7 seconds or less", Snackbar.LENGTH_LONG).show();

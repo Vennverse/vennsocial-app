@@ -1000,7 +1000,11 @@ public class ChatActivity extends AppCompatActivity implements GiphyDialogFragme
             retriever.setDataSource(getApplicationContext(), video_uri);
             String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             long timeInMilli = Long.parseLong(time);
-            retriever.release();
+            try {
+                retriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (timeInMilli > 50000){
                 Snackbar.make(main, "Video must be of 5 minutes or less", Snackbar.LENGTH_LONG).show();
