@@ -13,6 +13,7 @@ import com.spacester.myfriend.menu.MenuActivity;
 import com.spacester.myfriend.story.AddStoryActivity;
 
 import java.io.File;
+import java.io.IOException;
 
 import ly.img.android.pesdk.PhotoEditorSettingsList;
 import ly.img.android.pesdk.assets.filter.basic.FilterPackBasic;
@@ -57,7 +58,7 @@ public class ImageEditingActivity extends Activity implements PermissionRequest.
     private SettingsList createPesdkSettingsList() {
 
         // Create a empty new SettingsList and apply the changes on this referance.
-        PhotoEditorSettingsList settingsList = new PhotoEditorSettingsList();
+        PhotoEditorSettingsList settingsList = new PhotoEditorSettingsList(true);
 
         // If you include our asset Packs and you use our UI you also need to add them to the UI,
         // otherwise they are only available for the backend
@@ -135,10 +136,14 @@ public class ImageEditingActivity extends Activity implements PermissionRequest.
 
             // OPTIONAL: read the latest state to save it as a serialisation
             SettingsList lastState = data.getSettingsList();
-            new IMGLYFileWriter(lastState).writeJson(new File(
-                    Environment.getExternalStorageDirectory(),
-                    "serialisationReadyToReadWithPESDKFileReader.json"
-            ));
+            try {
+                new IMGLYFileWriter(lastState).writeJson(new File(
+                        Environment.getExternalStorageDirectory(),
+                        "serialisationReadyToReadWithPESDKFileReader.json"
+                ));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
         } else if (resultCode == RESULT_CANCELED && requestCode == PESDK_RESULT) {
 

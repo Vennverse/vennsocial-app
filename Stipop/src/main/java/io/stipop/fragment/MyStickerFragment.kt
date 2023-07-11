@@ -19,10 +19,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.stipop.*
 import io.stipop.adapter.MyStickerAdapter
+import io.stipop.databinding.FragmentMyStickerBinding
 import io.stipop.extend.dragdrop.OnRecyclerAdapterEventListener
 import io.stipop.extend.dragdrop.SimpleItemTouchHelperCallback
 import io.stipop.model.SPPackage
-import kotlinx.android.synthetic.main.fragment_my_sticker.*
 import org.json.JSONObject
 import java.io.IOException
 
@@ -30,7 +30,7 @@ import java.io.IOException
 class MyStickerFragment: Fragment(), OnRecyclerAdapterEventListener {
 
     private lateinit var myContext: Context
-
+    private lateinit var binding: FragmentMyStickerBinding
     private lateinit var myStickerAdapter: MyStickerAdapter
     private lateinit var itemTouchHelper: ItemTouchHelper
 
@@ -43,24 +43,24 @@ class MyStickerFragment: Fragment(), OnRecyclerAdapterEventListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        binding = FragmentMyStickerBinding.inflate(inflater, container, false)
         this.myContext = container!!.context
 
-        return inflater.inflate(R.layout.fragment_my_sticker, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        stickerTypeTV.setTextColor(Config.getActiveHiddenStickerTextColor(myContext))
-        stickerTypeTV.setBackgroundColor(Config.getHiddenStickerBackgroundColor(myContext))
+        binding.stickerTypeTV.setTextColor(Config.getActiveHiddenStickerTextColor(myContext))
+        binding.stickerTypeTV.setBackgroundColor(Config.getHiddenStickerBackgroundColor(myContext))
 
 
         myStickerAdapter = MyStickerAdapter(myContext, data, this)
 
-        listRV.layoutManager = LinearLayoutManager(myContext)
-        listRV.adapter = myStickerAdapter
-        listRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.listRV.layoutManager = LinearLayoutManager(myContext)
+        binding.listRV.adapter = myStickerAdapter
+        binding.listRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
@@ -70,7 +70,7 @@ class MyStickerFragment: Fragment(), OnRecyclerAdapterEventListener {
                 if (lastVisibleItemPosition + 1 == itemTotalCount && totalPage > page) {
                     // 리스트 마지막 도착! 다음 페이지 로드!
                     page += 1
-                    if (stickerTypeTV.tag == 1) {
+                    if (binding.stickerTypeTV.tag == 1) {
                         loadMySticker()
                     } else {
                         loadMyHiddenSticker()
@@ -83,10 +83,10 @@ class MyStickerFragment: Fragment(), OnRecyclerAdapterEventListener {
         myStickerAdapter.setOnRecyclerAdapterEventListener(this)
         val callback = SimpleItemTouchHelperCallback(myStickerAdapter)
         itemTouchHelper = ItemTouchHelper(callback)
-        itemTouchHelper.attachToRecyclerView(listRV)
+        itemTouchHelper.attachToRecyclerView(binding.listRV)
 
-        stickerTypeTV.setOnClickListener {
-            stickerTypeTV.tag = if (stickerTypeTV.tag == 2) { 1 } else { 2 }
+        binding.stickerTypeTV.setOnClickListener {
+            binding.stickerTypeTV.tag = if (binding.stickerTypeTV.tag == 2) { 1 } else { 2 }
 
             reloadData()
         }
@@ -98,14 +98,14 @@ class MyStickerFragment: Fragment(), OnRecyclerAdapterEventListener {
         page = 1
         totalPage = 1
 
-        if (stickerTypeTV.tag == 1) {
-            stickerTypeTV.text = getString(R.string.view_hidden_stickers)
-            stickerTypeTV.setBackgroundColor(Config.getHiddenStickerBackgroundColor(myContext))
+        if (binding.stickerTypeTV.tag == 1) {
+            binding.stickerTypeTV.text = getString(R.string.view_hidden_stickers)
+            binding.stickerTypeTV.setBackgroundColor(Config.getHiddenStickerBackgroundColor(myContext))
 
             loadMySticker()
         } else {
-            stickerTypeTV.text = getString(R.string.view_active_stickers)
-            stickerTypeTV.setBackgroundColor(Config.getActiveStickerBackgroundColor(myContext))
+            binding.stickerTypeTV.text = getString(R.string.view_active_stickers)
+            binding.stickerTypeTV.setBackgroundColor(Config.getActiveStickerBackgroundColor(myContext))
 
             loadMyHiddenSticker()
         }
@@ -157,11 +157,11 @@ class MyStickerFragment: Fragment(), OnRecyclerAdapterEventListener {
 
     private fun setNoResultView() {
         if(data.count() > 0) {
-            listLL.visibility = View.VISIBLE
-            noneTV.visibility = View.GONE
+            binding.listLL.visibility = View.VISIBLE
+            binding.noneTV.visibility = View.GONE
         } else {
-            listLL.visibility = View.GONE
-            noneTV.visibility = View.VISIBLE
+            binding.listLL.visibility = View.GONE
+            binding.noneTV.visibility = View.VISIBLE
         }
     }
 
