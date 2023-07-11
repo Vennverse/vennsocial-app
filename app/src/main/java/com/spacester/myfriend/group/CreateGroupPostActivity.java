@@ -938,536 +938,441 @@ public class CreateGroupPostActivity extends AppCompatActivity implements Privac
     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.image:
+        int id = v.getId();
+        if (id == R.id.image) {
+            post_more.cancel();
 
-                post_more.cancel();
+            number = "";
+            bg.setVisibility(View.GONE);
+            bg_text.setVisibility(View.GONE);
+            bg_image.setVisibility(View.GONE);
 
-                number = "";
-                bg.setVisibility(View.GONE);
-                bg_text.setVisibility(View.GONE);
-                bg_image.setVisibility(View.GONE);
+            relativeLayout.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
+            cancel.setVisibility(View.GONE);
+            voicePlayerView.setVisibility(View.GONE);
+            videoView.setVisibility(View.GONE);
+            type = "text";
 
-                relativeLayout.setVisibility(View.GONE);
-                imageView.setVisibility(View.GONE);
-                cancel.setVisibility(View.GONE);
-                voicePlayerView.setVisibility(View.GONE);
-                videoView.setVisibility(View.GONE);
-                type = "text";
-
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickImage();
-                    }
-                }
-                else {
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickImage();
                 }
+            } else {
+                pickImage();
+            }
+        } else if (id == R.id.video) {
+            post_more.cancel();
 
+            number = "";
+            bg.setVisibility(View.GONE);
+            bg_text.setVisibility(View.GONE);
+            bg_image.setVisibility(View.GONE);
 
-                break;
-            case R.id.video:
+            relativeLayout.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
+            cancel.setVisibility(View.GONE);
+            voicePlayerView.setVisibility(View.GONE);
+            videoView.setVisibility(View.GONE);
+            type = "text";
 
-                post_more.cancel();
-
-                number = "";
-                bg.setVisibility(View.GONE);
-                bg_text.setVisibility(View.GONE);
-                bg_image.setVisibility(View.GONE);
-
-                relativeLayout.setVisibility(View.GONE);
-                imageView.setVisibility(View.GONE);
-                cancel.setVisibility(View.GONE);
-                voicePlayerView.setVisibility(View.GONE);
-                videoView.setVisibility(View.GONE);
-                type = "text";
-
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickVideo();
-                    }
-                }
-                else {
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickVideo();
                 }
-                break;
-            case R.id.audio:
+            } else {
+                pickVideo();
+            }
+        } else if (id == R.id.audio) {
+            post_more.cancel();
 
-                post_more.cancel();
+            number = "";
+            bg.setVisibility(View.GONE);
+            bg_text.setVisibility(View.GONE);
+            bg_image.setVisibility(View.GONE);
 
-                number = "";
-                bg.setVisibility(View.GONE);
-                bg_text.setVisibility(View.GONE);
-                bg_image.setVisibility(View.GONE);
+            relativeLayout.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
+            cancel.setVisibility(View.GONE);
+            voicePlayerView.setVisibility(View.GONE);
+            videoView.setVisibility(View.GONE);
+            type = "text";
 
-                relativeLayout.setVisibility(View.GONE);
-                imageView.setVisibility(View.GONE);
-                cancel.setVisibility(View.GONE);
-                voicePlayerView.setVisibility(View.GONE);
-                videoView.setVisibility(View.GONE);
-                type = "text";
-
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickAudio();
-                    }
-                }
-                else {
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickAudio();
                 }
-                break;
-            case R.id.feeling:
-                post_more.cancel();
-                FeelingActivity dialogFragment = FeelingActivity.newInstance();
-                dialogFragment.setCallBack((type, value) -> {
-                    //activity
-                    switch (type) {
-                        case "traveling":
-                            sticker.setImageResource(R.drawable.airplane);
-                            what.setText("Traveling to " + value);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "watching":
-                            sticker.setImageResource(R.drawable.watching);
-                            what.setText("Watching " + value);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "listening":
-                            sticker.setImageResource(R.drawable.listening);
-                            what.setText("Listening " + value);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "thinking":
-                            sticker.setImageResource(R.drawable.thinking);
-                            what.setText("Thinking about " + value);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "celebrating":
-                            sticker.setImageResource(R.drawable.celebration);
-                            what.setText("Celebrating " + value);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "looking":
-                            sticker.setImageResource(R.drawable.looking);
-                            what.setText("Looking for " + value);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "playing":
-                            sticker.setImageResource(R.drawable.playing);
-                            what.setText("Playing " + value);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                    }
-                    //feeling
-                    switch (type) {
-                        case "happy":
-                            sticker.setImageResource(R.drawable.smiling);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "loved":
-                            sticker.setImageResource(R.drawable.love);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "sad":
-                            sticker.setImageResource(R.drawable.sad);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "crying":
-                            sticker.setImageResource(R.drawable.crying);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "angry":
-                            sticker.setImageResource(R.drawable.angry);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "confused":
-                            sticker.setImageResource(R.drawable.confused);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "broken":
-                            sticker.setImageResource(R.drawable.broken);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "cool":
-                            sticker.setImageResource(R.drawable.cool);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "funny":
-                            sticker.setImageResource(R.drawable.joy);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "tired":
-                            sticker.setImageResource(R.drawable.tired);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "shock":
-                            sticker.setImageResource(R.drawable.shocked);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "love":
-                            sticker.setImageResource(R.drawable.heart);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "sleepy":
-                            sticker.setImageResource(R.drawable.sleeping);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "expressionless":
-                            sticker.setImageResource(R.drawable.muted);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                        case "blessed":
-                            sticker.setImageResource(R.drawable.angel);
-                            what.setText("Feeling " + type);
-                            findViewById(R.id.gap).setVisibility(View.VISIBLE);
-                            break;
-                    }
-
-                });
-                dialogFragment.show(getSupportFragmentManager(), "tag");
-                break;
-            case R.id.meeting:
-                post_more.cancel();
-                startActivity(new Intent(CreateGroupPostActivity.this, MeetingActivity.class));
-                break;
-            case R.id.reels:
-                post_more.cancel();
-                selectReel();
-                break;
-            case R.id.live:
-                String room = String.valueOf(System.currentTimeMillis());
-                Query query = FirebaseDatabase.getInstance().getReference().child("Live").orderByChild("userid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
-                            snapshot.getRef().removeValue();
-                            Intent i = new Intent(CreateGroupPostActivity.this, GoBroadcastActivity.class);
-                            i.putExtra("name", room);
-                            i.putExtra("type", "host");
-                            startActivity(i);
-                        }else {
-                            Intent i = new Intent(CreateGroupPostActivity.this, GoBroadcastActivity.class);
-                            i.putExtra("name", room);
-                            i.putExtra("type", "host");
-                            startActivity(i);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                break;
-            case R.id.podcast:
-                post_more.cancel();
-                createPod();
-                break;
-            case R.id.watch_party:
-                post_more.cancel();
-
-                Query q = FirebaseDatabase.getInstance().getReference().child("Party").orderByChild("from").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                q.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot ds : snapshot.getChildren()){
-                            if (ds.child("from").getValue().toString().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
-                                ds.getRef().removeValue();
-                                startActivity(new Intent(CreateGroupPostActivity.this, StartWatchPartyActivity.class));
-                            }else {
-                                startActivity(new Intent(CreateGroupPostActivity.this, StartWatchPartyActivity.class));
-                            }
-                        }
-                        startActivity(new Intent(CreateGroupPostActivity.this, StartWatchPartyActivity.class));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                break;
-            case R.id.sell:
-                post_more.cancel();
-                startActivity(new Intent(CreateGroupPostActivity.this, PostProductActivity.class));
-                break;
-            case R.id.camera:
-                post_more.cancel();
-                startActivity(new Intent(CreateGroupPostActivity.this, FaceFilters.class));
-                break;
-            case  R.id.gif:
-
-                //GIF
-
-                post_more.cancel();
-
-                number = "";
-                bg.setVisibility(View.GONE);
-                bg_text.setVisibility(View.GONE);
-                bg_image.setVisibility(View.GONE);
-
-                relativeLayout.setVisibility(View.GONE);
-                imageView.setVisibility(View.GONE);
-                cancel.setVisibility(View.GONE);
-                voicePlayerView.setVisibility(View.GONE);
-                videoView.setVisibility(View.GONE);
-                type = "text";
-
-                Intent intent = new Intent(CreateGroupPostActivity.this, StickersPost.class);
-                intent.putExtra("activity", "group");
-                startActivity(intent);
-
-
-                break;
-
-            case  R.id.background:
-
-                bg_more.show();
-                post_more.cancel();
-
-                number = "";
-                bg.setVisibility(View.GONE);
-                bg_text.setVisibility(View.GONE);
-                bg_image.setVisibility(View.GONE);
-
-                relativeLayout.setVisibility(View.GONE);
-                imageView.setVisibility(View.GONE);
-                cancel.setVisibility(View.GONE);
-                voicePlayerView.setVisibility(View.GONE);
-                videoView.setVisibility(View.GONE);
-                type = "text";
-
-
-                break;
-
-            case  R.id.one:
-
-                bg_more.cancel();
-                type = "bg";
-                number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_one.jpeg?alt=media&token=2b1f2c65-14c0-4d49-8938-aac10900c082";
-                bg.setVisibility(View.VISIBLE);
-                bg_text.setVisibility(View.VISIBLE);
-                bg_image.setVisibility(View.VISIBLE);
-
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_one.jpeg?alt=media&token=2b1f2c65-14c0-4d49-8938-aac10900c082").into(bg_image);
-
-                break;
-
-            case  R.id.two:
-
-                bg_more.cancel();
-                type = "bg";
-                number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_two.jpeg?alt=media&token=55222523-9e8e-4132-8f6c-33d055410146";
-                bg.setVisibility(View.VISIBLE);
-                bg_text.setVisibility(View.VISIBLE);
-                bg_image.setVisibility(View.VISIBLE);
-
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_two.jpeg?alt=media&token=55222523-9e8e-4132-8f6c-33d055410146").into(bg_image);
-
-                break;
-
-            case  R.id.three:
-
-                bg_more.cancel();
-                type = "bg";
-                number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_three.jpeg?alt=media&token=879afce6-96e4-417e-ba43-7241987953b4";
-                bg.setVisibility(View.VISIBLE);
-                bg_text.setVisibility(View.VISIBLE);
-                bg_image.setVisibility(View.VISIBLE);
-
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_three.jpeg?alt=media&token=879afce6-96e4-417e-ba43-7241987953b4").into(bg_image);
-
-                break;
-
-            case  R.id.four:
-
-                bg_more.cancel();
-                type = "bg";
-                number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_four.jpeg?alt=media&token=964f050c-160d-44dc-8967-db3d0aea3031";
-                bg.setVisibility(View.VISIBLE);
-                bg_text.setVisibility(View.VISIBLE);
-                bg_image.setVisibility(View.VISIBLE);
-
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_four.jpeg?alt=media&token=964f050c-160d-44dc-8967-db3d0aea3031").into(bg_image);
-
-                break;
-
-            case  R.id.five:
-
-                bg_more.cancel();
-                type = "bg";
-                number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_five.jpeg?alt=media&token=28f7bae1-7c88-4edb-b434-90ae5f98ddf9";
-                bg.setVisibility(View.VISIBLE);
-                bg_text.setVisibility(View.VISIBLE);
-                bg_image.setVisibility(View.VISIBLE);
-
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_five.jpeg?alt=media&token=28f7bae1-7c88-4edb-b434-90ae5f98ddf9").into(bg_image);
-
-                break;
-
-            case  R.id.six:
-
-                bg_more.cancel();
-                type = "bg";
-                number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_six.jpeg?alt=media&token=425521dc-d8ed-46f6-80d7-e906d3eb5592";
-                bg.setVisibility(View.VISIBLE);
-                bg_text.setVisibility(View.VISIBLE);
-                bg_image.setVisibility(View.VISIBLE);
-
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_six.jpeg?alt=media&token=425521dc-d8ed-46f6-80d7-e906d3eb5592").into(bg_image);
-
-                break;
-
-            case  R.id.seven:
-
-                bg_more.cancel();
-                type = "bg";
-                number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_seven.jpeg?alt=media&token=efe084a6-3cfd-432f-9775-6da5b772b1d1";
-                bg.setVisibility(View.VISIBLE);
-                bg_text.setVisibility(View.VISIBLE);
-                bg_image.setVisibility(View.VISIBLE);
-
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_seven.jpeg?alt=media&token=efe084a6-3cfd-432f-9775-6da5b772b1d1").into(bg_image);
-
-                break;
-
-            case  R.id.eight:
-
-                bg_more.cancel();
-                type = "bg";
-                number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_eight.jpeg?alt=media&token=2c802174-4f32-401d-b1ce-7fe81c279977";
-                bg.setVisibility(View.VISIBLE);
-                bg_text.setVisibility(View.VISIBLE);
-                bg_image.setVisibility(View.VISIBLE);
-
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_eight.jpeg?alt=media&token=2c802174-4f32-401d-b1ce-7fe81c279977").into(bg_image);
-
-                break;
-
-            case  R.id.nine:
-
-                bg_more.cancel();
-                type = "bg";
-                number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_nine.jpeg?alt=media&token=88db96a6-9f7f-4ee1-ab7c-9428e2a2cc9d";
-                bg.setVisibility(View.VISIBLE);
-                bg_text.setVisibility(View.VISIBLE);
-                bg_image.setVisibility(View.VISIBLE);
-
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_nine.jpeg?alt=media&token=88db96a6-9f7f-4ee1-ab7c-9428e2a2cc9d").into(bg_image);
-
-                break;
-
-            case  R.id.ten:
-
-                bg_more.cancel();
-                type = "bg";
-                number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_ten.jpeg?alt=media&token=b8d3c3e8-c3bc-43fe-b3c3-1fad72ad1190";
-                bg.setVisibility(View.VISIBLE);
-                bg_text.setVisibility(View.VISIBLE);
-                bg_image.setVisibility(View.VISIBLE);
-
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_ten.jpeg?alt=media&token=b8d3c3e8-c3bc-43fe-b3c3-1fad72ad1190").into(bg_image);
-
-                break;
-
-            case  R.id.eleven:
-
-                bg_more.cancel();
-                type = "bg";
-                number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_11.jpeg?alt=media&token=de7f6fb9-0560-44ba-a165-87cc722d02c9";
-                bg.setVisibility(View.VISIBLE);
-                bg_text.setVisibility(View.VISIBLE);
-                bg_image.setVisibility(View.VISIBLE);
-
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_11.jpeg?alt=media&token=de7f6fb9-0560-44ba-a165-87cc722d02c9").into(bg_image);
-
-                break;
-
-            case  R.id.twelve:
-
-                bg_more.cancel();
-                type = "bg";
-                number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_twelve.jpeg?alt=media&token=90dccc95-48c1-4944-adba-647c52ec01b3";
-                bg.setVisibility(View.VISIBLE);
-                bg_text.setVisibility(View.VISIBLE);
-                bg_image.setVisibility(View.VISIBLE);
-
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_twelve.jpeg?alt=media&token=90dccc95-48c1-4944-adba-647c52ec01b3").into(bg_image);
-
-                break;
-
-            case  R.id.thirteen:
-
-                bg_more.cancel();
-                type = "bg";
-                number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_13.jpeg?alt=media&token=0f1acff5-682b-44fb-b517-525ed4e715eb";
-                bg.setVisibility(View.VISIBLE);
-                bg_text.setVisibility(View.VISIBLE);
-                bg_image.setVisibility(View.VISIBLE);
-
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_13.jpeg?alt=media&token=0f1acff5-682b-44fb-b517-525ed4e715eb").into(bg_image);
-
-                break;
-
-            case R.id.upload:
-
-                bg_more.cancel();
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickBG();
+            } else {
+                pickAudio();
+            }
+        } else if (id == R.id.feeling) {
+            post_more.cancel();
+            FeelingActivity dialogFragment = FeelingActivity.newInstance();
+            dialogFragment.setCallBack((type, value) -> {
+                //activity
+                switch (type) {
+                    case "traveling":
+                        sticker.setImageResource(R.drawable.airplane);
+                        what.setText("Traveling to " + value);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "watching":
+                        sticker.setImageResource(R.drawable.watching);
+                        what.setText("Watching " + value);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "listening":
+                        sticker.setImageResource(R.drawable.listening);
+                        what.setText("Listening " + value);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "thinking":
+                        sticker.setImageResource(R.drawable.thinking);
+                        what.setText("Thinking about " + value);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "celebrating":
+                        sticker.setImageResource(R.drawable.celebration);
+                        what.setText("Celebrating " + value);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "looking":
+                        sticker.setImageResource(R.drawable.looking);
+                        what.setText("Looking for " + value);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "playing":
+                        sticker.setImageResource(R.drawable.playing);
+                        what.setText("Playing " + value);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                }
+                //feeling
+                switch (type) {
+                    case "happy":
+                        sticker.setImageResource(R.drawable.smiling);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "loved":
+                        sticker.setImageResource(R.drawable.love);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "sad":
+                        sticker.setImageResource(R.drawable.sad);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "crying":
+                        sticker.setImageResource(R.drawable.crying);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "angry":
+                        sticker.setImageResource(R.drawable.angry);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "confused":
+                        sticker.setImageResource(R.drawable.confused);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "broken":
+                        sticker.setImageResource(R.drawable.broken);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "cool":
+                        sticker.setImageResource(R.drawable.cool);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "funny":
+                        sticker.setImageResource(R.drawable.joy);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "tired":
+                        sticker.setImageResource(R.drawable.tired);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "shock":
+                        sticker.setImageResource(R.drawable.shocked);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "love":
+                        sticker.setImageResource(R.drawable.heart);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "sleepy":
+                        sticker.setImageResource(R.drawable.sleeping);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "expressionless":
+                        sticker.setImageResource(R.drawable.muted);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                    case "blessed":
+                        sticker.setImageResource(R.drawable.angel);
+                        what.setText("Feeling " + type);
+                        findViewById(R.id.gap).setVisibility(View.VISIBLE);
+                        break;
+                }
+
+            });
+            dialogFragment.show(getSupportFragmentManager(), "tag");
+        } else if (id == R.id.meeting) {
+            post_more.cancel();
+            startActivity(new Intent(CreateGroupPostActivity.this, MeetingActivity.class));
+        } else if (id == R.id.reels) {
+            post_more.cancel();
+            selectReel();
+        } else if (id == R.id.live) {
+            String room = String.valueOf(System.currentTimeMillis());
+            Query query = FirebaseDatabase.getInstance().getReference().child("Live").orderByChild("userid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        snapshot.getRef().removeValue();
+                        Intent i = new Intent(CreateGroupPostActivity.this, GoBroadcastActivity.class);
+                        i.putExtra("name", room);
+                        i.putExtra("type", "host");
+                        startActivity(i);
+                    } else {
+                        Intent i = new Intent(CreateGroupPostActivity.this, GoBroadcastActivity.class);
+                        i.putExtra("name", room);
+                        i.putExtra("type", "host");
+                        startActivity(i);
                     }
                 }
-                else {
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        } else if (id == R.id.podcast) {
+            post_more.cancel();
+            createPod();
+        } else if (id == R.id.watch_party) {
+            post_more.cancel();
+
+            Query q = FirebaseDatabase.getInstance().getReference().child("Party").orderByChild("from").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            q.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (ds.child("from").getValue().toString().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            ds.getRef().removeValue();
+                            startActivity(new Intent(CreateGroupPostActivity.this, StartWatchPartyActivity.class));
+                        } else {
+                            startActivity(new Intent(CreateGroupPostActivity.this, StartWatchPartyActivity.class));
+                        }
+                    }
+                    startActivity(new Intent(CreateGroupPostActivity.this, StartWatchPartyActivity.class));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        } else if (id == R.id.sell) {
+            post_more.cancel();
+            startActivity(new Intent(CreateGroupPostActivity.this, PostProductActivity.class));
+        } else if (id == R.id.camera) {
+            post_more.cancel();
+            startActivity(new Intent(CreateGroupPostActivity.this, FaceFilters.class));
+        } else if (id == R.id.gif) {//GIF
+
+            post_more.cancel();
+
+            number = "";
+            bg.setVisibility(View.GONE);
+            bg_text.setVisibility(View.GONE);
+            bg_image.setVisibility(View.GONE);
+
+            relativeLayout.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
+            cancel.setVisibility(View.GONE);
+            voicePlayerView.setVisibility(View.GONE);
+            videoView.setVisibility(View.GONE);
+            type = "text";
+
+            Intent intent = new Intent(CreateGroupPostActivity.this, StickersPost.class);
+            intent.putExtra("activity", "group");
+            startActivity(intent);
+        } else if (id == R.id.background) {
+            bg_more.show();
+            post_more.cancel();
+
+            number = "";
+            bg.setVisibility(View.GONE);
+            bg_text.setVisibility(View.GONE);
+            bg_image.setVisibility(View.GONE);
+
+            relativeLayout.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
+            cancel.setVisibility(View.GONE);
+            voicePlayerView.setVisibility(View.GONE);
+            videoView.setVisibility(View.GONE);
+            type = "text";
+        } else if (id == R.id.one) {
+            bg_more.cancel();
+            type = "bg";
+            number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_one.jpeg?alt=media&token=2b1f2c65-14c0-4d49-8938-aac10900c082";
+            bg.setVisibility(View.VISIBLE);
+            bg_text.setVisibility(View.VISIBLE);
+            bg_image.setVisibility(View.VISIBLE);
+
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_one.jpeg?alt=media&token=2b1f2c65-14c0-4d49-8938-aac10900c082").into(bg_image);
+        } else if (id == R.id.two) {
+            bg_more.cancel();
+            type = "bg";
+            number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_two.jpeg?alt=media&token=55222523-9e8e-4132-8f6c-33d055410146";
+            bg.setVisibility(View.VISIBLE);
+            bg_text.setVisibility(View.VISIBLE);
+            bg_image.setVisibility(View.VISIBLE);
+
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_two.jpeg?alt=media&token=55222523-9e8e-4132-8f6c-33d055410146").into(bg_image);
+        } else if (id == R.id.three) {
+            bg_more.cancel();
+            type = "bg";
+            number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_three.jpeg?alt=media&token=879afce6-96e4-417e-ba43-7241987953b4";
+            bg.setVisibility(View.VISIBLE);
+            bg_text.setVisibility(View.VISIBLE);
+            bg_image.setVisibility(View.VISIBLE);
+
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_three.jpeg?alt=media&token=879afce6-96e4-417e-ba43-7241987953b4").into(bg_image);
+        } else if (id == R.id.four) {
+            bg_more.cancel();
+            type = "bg";
+            number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_four.jpeg?alt=media&token=964f050c-160d-44dc-8967-db3d0aea3031";
+            bg.setVisibility(View.VISIBLE);
+            bg_text.setVisibility(View.VISIBLE);
+            bg_image.setVisibility(View.VISIBLE);
+
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_four.jpeg?alt=media&token=964f050c-160d-44dc-8967-db3d0aea3031").into(bg_image);
+        } else if (id == R.id.five) {
+            bg_more.cancel();
+            type = "bg";
+            number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_five.jpeg?alt=media&token=28f7bae1-7c88-4edb-b434-90ae5f98ddf9";
+            bg.setVisibility(View.VISIBLE);
+            bg_text.setVisibility(View.VISIBLE);
+            bg_image.setVisibility(View.VISIBLE);
+
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_five.jpeg?alt=media&token=28f7bae1-7c88-4edb-b434-90ae5f98ddf9").into(bg_image);
+        } else if (id == R.id.six) {
+            bg_more.cancel();
+            type = "bg";
+            number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_six.jpeg?alt=media&token=425521dc-d8ed-46f6-80d7-e906d3eb5592";
+            bg.setVisibility(View.VISIBLE);
+            bg_text.setVisibility(View.VISIBLE);
+            bg_image.setVisibility(View.VISIBLE);
+
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_six.jpeg?alt=media&token=425521dc-d8ed-46f6-80d7-e906d3eb5592").into(bg_image);
+        } else if (id == R.id.seven) {
+            bg_more.cancel();
+            type = "bg";
+            number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_seven.jpeg?alt=media&token=efe084a6-3cfd-432f-9775-6da5b772b1d1";
+            bg.setVisibility(View.VISIBLE);
+            bg_text.setVisibility(View.VISIBLE);
+            bg_image.setVisibility(View.VISIBLE);
+
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_seven.jpeg?alt=media&token=efe084a6-3cfd-432f-9775-6da5b772b1d1").into(bg_image);
+        } else if (id == R.id.eight) {
+            bg_more.cancel();
+            type = "bg";
+            number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_eight.jpeg?alt=media&token=2c802174-4f32-401d-b1ce-7fe81c279977";
+            bg.setVisibility(View.VISIBLE);
+            bg_text.setVisibility(View.VISIBLE);
+            bg_image.setVisibility(View.VISIBLE);
+
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_eight.jpeg?alt=media&token=2c802174-4f32-401d-b1ce-7fe81c279977").into(bg_image);
+        } else if (id == R.id.nine) {
+            bg_more.cancel();
+            type = "bg";
+            number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_nine.jpeg?alt=media&token=88db96a6-9f7f-4ee1-ab7c-9428e2a2cc9d";
+            bg.setVisibility(View.VISIBLE);
+            bg_text.setVisibility(View.VISIBLE);
+            bg_image.setVisibility(View.VISIBLE);
+
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_nine.jpeg?alt=media&token=88db96a6-9f7f-4ee1-ab7c-9428e2a2cc9d").into(bg_image);
+        } else if (id == R.id.ten) {
+            bg_more.cancel();
+            type = "bg";
+            number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_ten.jpeg?alt=media&token=b8d3c3e8-c3bc-43fe-b3c3-1fad72ad1190";
+            bg.setVisibility(View.VISIBLE);
+            bg_text.setVisibility(View.VISIBLE);
+            bg_image.setVisibility(View.VISIBLE);
+
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_ten.jpeg?alt=media&token=b8d3c3e8-c3bc-43fe-b3c3-1fad72ad1190").into(bg_image);
+        } else if (id == R.id.eleven) {
+            bg_more.cancel();
+            type = "bg";
+            number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_11.jpeg?alt=media&token=de7f6fb9-0560-44ba-a165-87cc722d02c9";
+            bg.setVisibility(View.VISIBLE);
+            bg_text.setVisibility(View.VISIBLE);
+            bg_image.setVisibility(View.VISIBLE);
+
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_11.jpeg?alt=media&token=de7f6fb9-0560-44ba-a165-87cc722d02c9").into(bg_image);
+        } else if (id == R.id.twelve) {
+            bg_more.cancel();
+            type = "bg";
+            number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_twelve.jpeg?alt=media&token=90dccc95-48c1-4944-adba-647c52ec01b3";
+            bg.setVisibility(View.VISIBLE);
+            bg_text.setVisibility(View.VISIBLE);
+            bg_image.setVisibility(View.VISIBLE);
+
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_twelve.jpeg?alt=media&token=90dccc95-48c1-4944-adba-647c52ec01b3").into(bg_image);
+        } else if (id == R.id.thirteen) {
+            bg_more.cancel();
+            type = "bg";
+            number = "https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_13.jpeg?alt=media&token=0f1acff5-682b-44fb-b517-525ed4e715eb";
+            bg.setVisibility(View.VISIBLE);
+            bg_text.setVisibility(View.VISIBLE);
+            bg_image.setVisibility(View.VISIBLE);
+
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/storage-4e152.appspot.com/o/bg_13.jpeg?alt=media&token=0f1acff5-682b-44fb-b517-525ed4e715eb").into(bg_image);
+        } else if (id == R.id.upload) {
+            bg_more.cancel();
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickBG();
                 }
-
-
-                break;
-
-            case R.id.button:
-
-                bg_more.cancel();
-
-                break;
+            } else {
+                pickBG();
+            }
+        } else if (id == R.id.button) {
+            bg_more.cancel();
         }
     }
 

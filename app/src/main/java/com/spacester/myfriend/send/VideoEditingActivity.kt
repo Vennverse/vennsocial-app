@@ -56,7 +56,7 @@ class VideoEditingActivity : Activity(), PermissionRequest.Response {
     // See the specific feature sections of our guides if you want to know how to add our own Assets.
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private fun createVESDKSettingsList() =
-            VideoEditorSettingsList()
+            VideoEditorSettingsList(saveUriPermissions = true)
                     .configure<UiConfigFilter> {
                         it.setFilterList(FilterPackBasic.getFilterPack())
                     }

@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import io.stipop.*
 import io.stipop.adapter.KeywordAdapter
 import io.stipop.adapter.StickerAdapter
+import io.stipop.databinding.ActivitySearchStickBinding
 import io.stipop.extend.RecyclerDecoration
 import io.stipop.model.SPSticker
-import kotlinx.android.synthetic.main.activity_search_stick.*
 import org.json.JSONObject
 import java.io.IOException
 
@@ -24,6 +24,7 @@ class SearchActivity: Activity() {
 
     lateinit var context: Context
 
+    private lateinit var binding: ActivitySearchStickBinding
     private lateinit var keywordAdapter: KeywordAdapter
     private lateinit var stickerAdapter: StickerAdapter
 
@@ -37,39 +38,39 @@ class SearchActivity: Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_stick)
+        binding = ActivitySearchStickBinding.inflate(layoutInflater)
 
         this.context = this
 
-        val drawable = cont.background as GradientDrawable
+        val drawable = binding.cont.background as GradientDrawable
         drawable.setColor(Color.parseColor(Config.themeBackgroundColor))
 
-        val drawable2 = bar.background as GradientDrawable
+        val drawable2 = binding.bar.background as GradientDrawable
         drawable2.setColor(Color.parseColor(Config.themeGroupedContentBackgroundColor)) // solid  color
         drawable2.cornerRadius = Utils.dpToPx(Config.searchbarRadius.toFloat())
 
-        searchIV.setImageResource(Config.getSearchbarResourceId(context))
-        eraseIV.setImageResource(Config.getEraseResourceId(context))
+        binding.searchIV.setImageResource(Config.getSearchbarResourceId(context))
+        binding.eraseIV.setImageResource(Config.getEraseResourceId(context))
 
-        titleTV.setTextColor(Config.getSearchTitleTextColor(context))
-        keywordET.setTextColor(Config.getSearchTitleTextColor(context))
+        binding.titleTV.setTextColor(Config.getSearchTitleTextColor(context))
+        binding.keywordET.setTextColor(Config.getSearchTitleTextColor(context))
 
 
-        searchIV.setIconDefaultsColor()
-        eraseIV.setIconDefaultsColor()
+        binding.searchIV.setIconDefaultsColor()
+        binding.eraseIV.setIconDefaultsColor()
 
 
         val gd = GradientDrawable(
             GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(Color.parseColor(Config.themeBackgroundColor), Color.TRANSPARENT)
         )
 
-        shadowV.background = gd
+        binding.shadowV.background = gd
 
-        clearTextLL.setOnClickListener {
-            keywordET.setText("")
+        binding.clearTextLL.setOnClickListener {
+            binding.keywordET.setText("")
         }
 
-        keywordET.addTextChangedListener(object : TextWatcher {
+        binding.keywordET.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
@@ -79,7 +80,7 @@ class SearchActivity: Activity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                val keyword = Utils.getString(keywordET)
+                val keyword = Utils.getString(binding.keywordET)
 
                 page = 1
                 search(keyword)
@@ -105,18 +106,18 @@ class SearchActivity: Activity() {
         val mLayoutManager = LinearLayoutManager(this)
         mLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
 
-        keywordRV.layoutManager = mLayoutManager
-        keywordRV.addItemDecoration(RecyclerDecoration(10))
-        keywordRV.adapter = keywordAdapter
+        binding.keywordRV.layoutManager = mLayoutManager
+        binding.keywordRV.addItemDecoration(RecyclerDecoration(10))
+        binding.keywordRV.adapter = keywordAdapter
 
-        stickerGV.numColumns = Config.searchNumOfColumns
-        stickerGV.adapter = stickerAdapter
-        stickerGV.setOnScrollListener(object : AbsListView.OnScrollListener {
+        binding.stickerGV.numColumns = Config.searchNumOfColumns
+        binding.stickerGV.adapter = stickerAdapter
+        binding.stickerGV.setOnScrollListener(object : AbsListView.OnScrollListener {
             override fun onScrollStateChanged(absListView: AbsListView?, scrollState: Int) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastItemVisibleFlag && totalPage > page) {
                     page += 1
 
-                    search(Utils.getString(keywordET))
+                    search(Utils.getString(binding.keywordET))
                 }
             }
 
@@ -126,7 +127,7 @@ class SearchActivity: Activity() {
 
         })
 
-        stickerGV.setOnItemClickListener { adapterView, view, i, l ->
+        binding.stickerGV.setOnItemClickListener { adapterView, view, i, l ->
             val sticker = stickerData[i]
 
             Stipop.send(sticker.stickerId, sticker.keyword) { result ->
@@ -139,9 +140,9 @@ class SearchActivity: Activity() {
         }
 
         if (Config.searchTagsHidden) {
-            tagLL.visibility = View.GONE
+            binding.tagLL.visibility = View.GONE
         } else {
-            tagLL.visibility = View.VISIBLE
+            binding.tagLL.visibility = View.VISIBLE
 
             getKeyword()
         }

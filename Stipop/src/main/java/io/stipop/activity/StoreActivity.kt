@@ -10,13 +10,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import io.stipop.Config
 import io.stipop.R
+import io.stipop.databinding.ActivityStoreBinding
 import io.stipop.fragment.AllStickerFragment
 import io.stipop.fragment.MyStickerFragment
-import kotlinx.android.synthetic.main.activity_store.*
 
 class StoreActivity: FragmentActivity() {
 
     lateinit var context: Context
+    private lateinit var binding: ActivityStoreBinding
 
     private lateinit var fragmentTransaction: FragmentTransaction
 
@@ -24,22 +25,21 @@ class StoreActivity: FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_store)
-
+        binding = ActivityStoreBinding.inflate(layoutInflater)
         this.context = this
 
         tab = intent.getIntExtra("tab", 1)
 
-        val drawable = containerLL.background as GradientDrawable
+        val drawable = binding.containerLL.background as GradientDrawable
         drawable.setColor(Color.parseColor(Config.themeBackgroundColor)) // solid  color
 
-        navigationBarLL.setBackgroundColor(Color.parseColor(Config.themeGroupedContentBackgroundColor))
+        binding.navigationBarLL.setBackgroundColor(Color.parseColor(Config.themeGroupedContentBackgroundColor))
 
-        underLineV.setBackgroundColor(Config.getUnderLineColor(context))
+        binding.underLineV.setBackgroundColor(Config.getUnderLineColor(context))
 
 
-        allV.setBackgroundColor(Config.getStoreNavigationTextColor(context, true))
-        myV.setBackgroundColor(Config.getStoreNavigationTextColor(context, true))
+        binding.allV.setBackgroundColor(Config.getStoreNavigationTextColor(context, true))
+        binding.myV.setBackgroundColor(Config.getStoreNavigationTextColor(context, true))
 
         val fm: FragmentManager = supportFragmentManager
 
@@ -53,7 +53,7 @@ class StoreActivity: FragmentActivity() {
             fragmentTransaction.commit()
         }
 
-        allTabLL.setOnClickListener {
+        binding.allTabLL.setOnClickListener {
             changeTabs(1)
 
             fragmentTransaction = fm.beginTransaction()
@@ -61,7 +61,7 @@ class StoreActivity: FragmentActivity() {
             fragmentTransaction.commit()
         }
 
-        myTabLL.setOnClickListener {
+        binding.myTabLL.setOnClickListener {
             changeTabs(2)
 
             fragmentTransaction = fm.beginTransaction()
@@ -74,18 +74,18 @@ class StoreActivity: FragmentActivity() {
     }
 
     private fun changeTabs(type: Int) {
-        allTV.setTextColor(Config.getStoreNavigationTextColor(context, false))
-        myTV.setTextColor(Config.getStoreNavigationTextColor(context, false))
+        binding.allTV.setTextColor(Config.getStoreNavigationTextColor(context, false))
+        binding.myTV.setTextColor(Config.getStoreNavigationTextColor(context, false))
 
-        allV.visibility = View.INVISIBLE
-        myV.visibility = View.INVISIBLE
+        binding.allV.visibility = View.INVISIBLE
+        binding.myV.visibility = View.INVISIBLE
 
         if (type == 1) {
-            allTV.setTextColor(Config.getStoreNavigationTextColor(context, true))
-            allV.visibility = View.VISIBLE
+            binding.allTV.setTextColor(Config.getStoreNavigationTextColor(context, true))
+            binding.allV.visibility = View.VISIBLE
         } else {
-            myTV.setTextColor(Config.getStoreNavigationTextColor(context, true))
-            myV.visibility = View.VISIBLE
+            binding.myTV.setTextColor(Config.getStoreNavigationTextColor(context, true))
+            binding.myV.visibility = View.VISIBLE
         }
     }
 
