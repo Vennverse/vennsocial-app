@@ -17,10 +17,6 @@ jobs:
       shell: "bash"
     environment:
       name: ${{ inputs.environment }}
-    permissions:
-      actions: read
-      contents: read
-      deployments: write
     outputs:
       apkPath: ${{ steps.uploadApk.outputs.filePath }}
       apkName: ${{ steps.uploadApk.outputs.fileName }}
