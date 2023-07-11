@@ -15,8 +15,6 @@ jobs:
     env:
       sed: "sed"
       shell: "bash"
-    environment:
-      name: ${{ inputs.environment }}
     permissions:
       deployments: write
     outputs:
