@@ -15,8 +15,6 @@ jobs:
     env:
       sed: "sed"
       shell: "bash"
-    permissions:
-      deployments: write
     outputs:
       apkPath: ${{ steps.uploadApk.outputs.filePath }}
       apkName: ${{ steps.uploadApk.outputs.fileName }}
