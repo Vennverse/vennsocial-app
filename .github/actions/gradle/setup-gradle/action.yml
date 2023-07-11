@@ -1,0 +1,16 @@
+name: "Setup gradle"
+description: "Setup gradle"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        cache-read-only: ${{ github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/main' }}
+        gradle-home-cache-includes: |
+          caches
+          notifications
+        gradle-home-cache-cleanup: true
+      env:
+        GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true

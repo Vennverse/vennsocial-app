@@ -1,0 +1,31 @@
+name: Build development
+
+on:
+  push:
+    branches:
+      - hotfix/*
+      - fix/*
+      - feature/*
+      - refactor/*
+      - update/*
+      - dev
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Check ops app development
+    uses: ./.github/workflows/reusable-check-development.yml
+    secrets: inherit
+    with:
+      environment: "staging"
+
+  remove-deployments:
+    runs-on: ubuntu-latest
+    needs: check
+    if: always()
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Delete deployments
+        uses: ./.github/actions/job/deployments-delete

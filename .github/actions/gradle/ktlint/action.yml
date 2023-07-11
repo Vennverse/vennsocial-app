@@ -1,0 +1,13 @@
+name: "Kotlin lint"
+description: "Kotlin code style lint"
+inputs:
+  shell:
+    required: true
+    description: "Shell to use depending on runner os"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Kotlin lint
+      run: ./gradlew ktlintCheck --stacktrace
+      shell: ${{ inputs.shell }}
