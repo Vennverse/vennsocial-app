@@ -829,50 +829,41 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.message:
-                more_options.cancel();
-                Intent intent = new Intent(UserProfileActivity.this, ChatActivity.class);
-                intent.putExtra("hisUID", hisUID);
-                startActivity(intent);
-
-                break;
-            case R.id.poke:
-                more_options.cancel();
-                notify = true;
-                FirebaseDatabase.getInstance().getReference("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        ModelUser user = snapshot.getValue(ModelUser.class);
-                        if (notify){
-                            sendNotification(hisUID, Objects.requireNonNull(user).getName(), "Has poked you");
-                        }
-                        notify = false;
+        int id = v.getId();
+        if (id == R.id.message) {
+            more_options.cancel();
+            Intent intent = new Intent(UserProfileActivity.this, ChatActivity.class);
+            intent.putExtra("hisUID", hisUID);
+            startActivity(intent);
+        } else if (id == R.id.poke) {
+            more_options.cancel();
+            notify = true;
+            FirebaseDatabase.getInstance().getReference("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ModelUser user = snapshot.getValue(ModelUser.class);
+                    if (notify) {
+                        sendNotification(hisUID, Objects.requireNonNull(user).getName(), "Has poked you");
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
-                addToHisNotification(hisUID, "Has poked you");
-                break;
-            case R.id.block:
-
-                more_options.cancel();
-                if (isBlocked){
-                    unBlockUser();
-                }else {
-                    BlockUser();
+                    notify = false;
                 }
 
-                break;
-            case R.id.report:
-
-                more_options.cancel();
-                FirebaseDatabase.getInstance().getReference().child("userReport").child(hisUID).setValue(true);
-                Snackbar.make(scroll, "Reported",Snackbar.LENGTH_LONG).show();
-
-                break;
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+            addToHisNotification(hisUID, "Has poked you");
+        } else if (id == R.id.block) {
+            more_options.cancel();
+            if (isBlocked) {
+                unBlockUser();
+            } else {
+                BlockUser();
+            }
+        } else if (id == R.id.report) {
+            more_options.cancel();
+            FirebaseDatabase.getInstance().getReference().child("userReport").child(hisUID).setValue(true);
+            Snackbar.make(scroll, "Reported", Snackbar.LENGTH_LONG).show();
         }
     }
 
