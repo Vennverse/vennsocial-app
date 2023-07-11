@@ -24,6 +24,7 @@ android {
     lintOptions {
         resourcePrefix 'gnt_'
     }
+    namespace "com.google.android.ads.nativetemplates"
 }
 
 

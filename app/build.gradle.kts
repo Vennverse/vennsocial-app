@@ -7,10 +7,9 @@ plugins {
     id("com.google.gms.google-services")
     id("kotlin-android")
     id("ly.img.android.sdk")
-    id("kotlin-android-extensions")
 }
 
-val kotlin_version = "1.6.10"
+val kotlin_version = "1.8.20"
 
 
 imglyConfig {
@@ -130,11 +129,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-
     packagingOptions {
-        excludes += "META-INF/NOTICE.md"
-        excludes += "META-INF/LICENSE.md"
+        resources {
+            excludes += setOf("META-INF/NOTICE.md", "META-INF/LICENSE.md")
+        }
     }
+    namespace = "com.spacester.myfriend"
 }
 
 repositories {
@@ -241,7 +241,7 @@ dependencies {
     implementation("com.googlecode.json-simple:json-simple:1.1.1")
     //noinspection GradleDependency
     configurations {
-        compile.get()
+        implementation.get()
                 .exclude(mapOf("group" to "junit", "module" to "junit"))
     }
     //noinspection GradleDependency
