@@ -1,3 +1,5 @@
+@file:android.annotation.SuppressLint("RiskyLibrary")
+
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -41,7 +43,7 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     //noinspection GradleDependency
-    implementation("com.google.android.gms:play-services-ads:19.7.0")
+    implementation("com.google.android.gms:play-services-ads:19.8.0")
     //noinspection GradleDependency
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
 }

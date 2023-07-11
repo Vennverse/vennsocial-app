@@ -1,3 +1,5 @@
+@file:android.annotation.SuppressLint("RiskyLibrary")
+
 //noinspection GradleDependency
 //noinspection GradleDependency
 //noinspection GradleDependency
