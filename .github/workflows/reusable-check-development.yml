@@ -52,7 +52,7 @@ jobs:
         with:
           shell: ${{ env.shell }}
 
-#      - name: Build
-#        uses: ./.github/actions/gradle/build-project
-#        with:
-#          shell: ${{ env.shell }}
+      - name: Build
+        uses: ./.github/actions/gradle/build-project
+        with:
+          shell: ${{ env.shell }}
