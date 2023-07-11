@@ -7,19 +7,21 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import io.stipop.R
 import android.os.Bundle
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import io.stipop.*
 import io.stipop.adapter.StickerAdapter
+import io.stipop.databinding.ActivityDetailBinding
 import io.stipop.model.SPPackage
 import io.stipop.model.SPSticker
-import kotlinx.android.synthetic.main.activity_detail.*
 import org.json.JSONObject
 import java.io.IOException
 
 class DetailActivity: Activity() {
 
+    private lateinit var binding: ActivityDetailBinding
     lateinit var context: Context
 
     lateinit var stickerAdapter: StickerAdapter
@@ -34,36 +36,36 @@ class DetailActivity: Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
 
         this.context = this
 
         packageId = intent.getIntExtra("packageId", -1)
 
 
-        val drawable = containerLL.background as GradientDrawable
+        val drawable = binding.containerLL.background as GradientDrawable
         drawable.setColor(Color.parseColor(Config.themeGroupedContentBackgroundColor)) // solid  color
 
-        contentsRL.setBackgroundColor(Color.parseColor(Config.themeBackgroundColor))
+        binding.contentsRL.setBackgroundColor(Color.parseColor(Config.themeBackgroundColor))
 
-        packageNameTV.setTextColor(Config.getDetailPackageNameTextColor(context))
+        binding.packageNameTV.setTextColor(Config.getDetailPackageNameTextColor(context))
 
-        backIV.setImageResource(Config.getBackIconResourceId(context))
-        closeIV.setImageResource(Config.getCloseIconResourceId(context))
-
-
-        backIV.setIconDefaultsColor()
-        closeIV.setIconDefaultsColor()
+        binding.backIV.setImageResource(Config.getBackIconResourceId(context))
+        binding.closeIV.setImageResource(Config.getCloseIconResourceId(context))
 
 
-        stickerGV.numColumns = Config.detailNumOfColumns
+        binding.backIV.setIconDefaultsColor()
+        binding.closeIV.setIconDefaultsColor()
 
 
-        backLL.setOnClickListener { finish() }
-        closeLL.setOnClickListener { finish() }
+        binding.stickerGV.numColumns = Config.detailNumOfColumns
 
-        downloadTV.setOnClickListener {
-            if (downloadTV.tag as Boolean) {
+
+        binding.backLL.setOnClickListener { finish() }
+        binding.closeLL.setOnClickListener { finish() }
+
+        binding.downloadTV.setOnClickListener {
+            if (binding.downloadTV.tag as Boolean) {
                 return@setOnClickListener
             }
 
@@ -76,7 +78,7 @@ class DetailActivity: Activity() {
         }
 
         stickerAdapter = StickerAdapter(context, R.layout.item_sticker, stickerData)
-        stickerGV.adapter = stickerAdapter
+        binding.stickerGV.adapter = stickerAdapter
 
         getPackInfo()
     }
@@ -107,23 +109,23 @@ class DetailActivity: Activity() {
 
                     packageAnimated = this.spPackage.packageAnimated
 
-                    Glide.with(context).load(this.spPackage.packageImg).into(packageIV)
+                    Glide.with(context).load(this.spPackage.packageImg).into(binding.packageIV)
 
-                    packageNameTV.text = this.spPackage.packageName
-                    artistNameTV.text = this.spPackage.artistName
+                    binding.packageNameTV.text = this.spPackage.packageName
+                    binding.artistNameTV.text = this.spPackage.artistName
 
                     if (this.spPackage.isDownload) {
-                        downloadTV.setBackgroundResource(R.drawable.detail_download_btn_background_disable)
-                        downloadTV.text = getString(R.string.downloaded)
+                        binding.downloadTV.setBackgroundResource(R.drawable.detail_download_btn_background_disable)
+                        binding.downloadTV.text = getString(R.string.downloaded)
                     } else {
-                        downloadTV.setBackgroundResource(R.drawable.detail_download_btn_background)
-                        downloadTV.text = getString(R.string.download)
+                        binding.downloadTV.setBackgroundResource(R.drawable.detail_download_btn_background)
+                        binding.downloadTV.text = getString(R.string.download)
 
-                        val drawable2 = downloadTV.background as GradientDrawable
+                        val drawable2 = binding.downloadTV.background as GradientDrawable
                         drawable2.setColor(Color.parseColor(Config.themeMainColor)) // solid  color
                     }
 
-                    downloadTV.tag = this.spPackage.isDownload
+                    binding.downloadTV.tag = this.spPackage.isDownload
                 }
 
             } else {
@@ -169,8 +171,10 @@ class DetailActivity: Activity() {
 
                     // download
                     PackUtils.downloadAndSaveLocal(this, this.spPackage) {
-                        downloadTV.text = getString(R.string.downloaded)
-                        downloadTV.setBackgroundResource(R.drawable.detail_download_btn_background_disable)
+                        binding.downloadTV.text = getString(R.string.downloaded)
+                        binding.downloadTV.setBackgroundResource(R.drawable.detail_download_btn_background_disable)
+
+
 
                         Toast.makeText(context, getString(R.string.download_done), Toast.LENGTH_LONG).show()
                     }
