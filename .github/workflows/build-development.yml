@@ -17,7 +17,7 @@ on:
 
 jobs:
   check:
-    name: Check ops app development
+    name: Check app development
     uses: ./.github/workflows/reusable-check-development.yml
     secrets: inherit
     with:
