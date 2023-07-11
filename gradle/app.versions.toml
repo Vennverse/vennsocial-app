@@ -6,21 +6,25 @@ androidTargetSdk = "33"
 
 glide = "4.15.1"
 
+imgly = "10.7.2"
 javaCompatibility = "17"
 
 kotlin = "1.8.20"
 googleKsp = "1.8.10-1.0.9" # this refernces kotlin version
-googlePlayServicesGradlePlugin = "4.3.15"
+
+googlePlayServicesGradlePlugin = "4.3.5"
 
 kotlinxCoroutines = "1.7.0-Beta"
 
 [libraries]
-android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin"}
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
 
 google-play-services-gradle-plugin = { group = "com.google.gms", name = "google-services", version.ref = "googlePlayServicesGradlePlugin" }
+
+imgly-gradle-plugin = { group = "ly.img.android.pesdk", name = "plugin", version.ref = "imgly" }
 
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
@@ -30,9 +34,12 @@ kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 
 google-play-services = { id = "com.google.gms.google-services", version.ref = "googlePlayServicesGradlePlugin" }
+
+imgly-sdk = { id = "ly.img.android.sdk", version.ref = "imgly" }
 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

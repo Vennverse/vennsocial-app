@@ -3,12 +3,21 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven("https://artifactory.img.ly/artifactory/imgly")
     }
 }
+
 dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        jcenter()
+        maven("https://www.jitpack.io")
+        maven("https://artifactory.img.ly/artifactory/imgly")
+        maven("https://github.com/jitsi/jitsi-maven-repository/raw/master/releases")
+        flatDir {
+            dirs("deepar")
+        }
     }
     versionCatalogs {
         create("app") {

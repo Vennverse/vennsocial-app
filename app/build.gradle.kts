@@ -140,12 +140,6 @@ android {
     namespace = "com.spacester.myfriend"
 }
 
-repositories {
-    flatDir {
-        dirs("../deepar")
-    }
-}
-
 dependencies {
 
     implementation("androidx.appcompat:appcompat:1.4.1")
