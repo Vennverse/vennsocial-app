@@ -416,89 +416,73 @@ public class EditGroupActivity extends AppCompatActivity implements View.OnClick
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.upload:
+        int vId = v.getId();
+        if (vId == R.id.upload) {
+            dp_edit.cancel();
 
-                dp_edit.cancel();
-
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickImage();
-                    }
-                }
-                else {
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickImage();
                 }
+            } else {
+                pickImage();
+            }
+        } else if (vId == R.id.delete) {
+            dp_edit.cancel();
 
-                break;
-            case R.id.delete:
+            if (!mDp.isEmpty()) {
+                findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+                StorageReference picRef = FirebaseStorage.getInstance().getReferenceFromUrl(mDp);
+                picRef.delete().addOnCompleteListener(task -> {
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("gIcon", "");
+                    FirebaseDatabase.getInstance().getReference("Groups").child(id).updateChildren(hashMap);
+                    Snackbar.make(main, "Profile photo deleted", Snackbar.LENGTH_LONG).show();
+                    findViewById(R.id.progressBar).setVisibility(View.GONE);
+                });
+            }
+        } else if (vId == R.id.image) {
+            cover_edit.cancel();
 
-                dp_edit.cancel();
-
-                if (!mDp.isEmpty()){
-                    findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
-                    StorageReference picRef = FirebaseStorage.getInstance().getReferenceFromUrl(mDp);
-                    picRef.delete().addOnCompleteListener(task -> {
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("gIcon", "");
-                        FirebaseDatabase.getInstance().getReference("Groups").child(id).updateChildren(hashMap);
-                        Snackbar.make(main, "Profile photo deleted", Snackbar.LENGTH_LONG).show();
-                        findViewById(R.id.progressBar).setVisibility(View.GONE);
-                    });
-                }
-
-                break;
-            case R.id.image:
-
-                cover_edit.cancel();
-
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickCoverImage();
-                    }
-                }
-                else {
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickCoverImage();
                 }
+            } else {
+                pickCoverImage();
+            }
+        } else if (vId == R.id.trash) {
+            cover_edit.cancel();
 
-                break;
-            case R.id.trash:
-
-                cover_edit.cancel();
-
-                //Cover
-                FirebaseDatabase.getInstance().getReference().child("Groups").child(id).child("Cover").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
-                            String uri = snapshot.child("uri").getValue().toString();
-                            StorageReference picRef = FirebaseStorage.getInstance().getReferenceFromUrl(uri);
-                            picRef.delete().addOnCompleteListener(task -> {
-                                snapshot.getRef().removeValue();
-                                Snackbar.make(main, "Cover deleted", Snackbar.LENGTH_LONG).show();
-                            });
-                        }
+            //Cover
+            FirebaseDatabase.getInstance().getReference().child("Groups").child(id).child("Cover").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String uri = snapshot.child("uri").getValue().toString();
+                        StorageReference picRef = FirebaseStorage.getInstance().getReferenceFromUrl(uri);
+                        picRef.delete().addOnCompleteListener(task -> {
+                            snapshot.getRef().removeValue();
+                            Snackbar.make(main, "Cover deleted", Snackbar.LENGTH_LONG).show();
+                        });
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
-
-                break;
+                }
+            });
         }
     }
 

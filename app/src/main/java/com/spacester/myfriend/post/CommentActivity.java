@@ -82,6 +82,7 @@ import com.tylersuehr.socialtextview.SocialTextView;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,6 +98,8 @@ import me.jagar.chatvoiceplayerlibrary.VoicePlayerView;
 import timber.log.Timber;
 
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
+import static com.spacester.myfriend.R.id.*;
+import static com.spacester.myfriend.R.id.image;
 
 @SuppressWarnings("ALL")
 public class CommentActivity extends AppCompatActivity implements View.OnClickListener{
@@ -170,7 +173,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         mp = MediaPlayer.create(getApplicationContext(), R.raw.like);
 
         main = findViewById(R.id.main);
-        urlEmbeddedView = findViewById(R.id.uev);
+        urlEmbeddedView = findViewById(uev);
         requestQueue = Volley.newRequestQueue(CommentActivity.this);
 
         //GetPostId
@@ -186,7 +189,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
             hashMap.put("type", "gif");
             hashMap.put("pId", postID);
             FirebaseDatabase.getInstance().getReference("Posts").child(postID).child("Comments").child(timeStamp).setValue(hashMap);
-            findViewById(R.id.progressBar).setVisibility(View.GONE);
+            findViewById(progressBar).setVisibility(View.GONE);
             Snackbar.make(main, "Comment sent", Snackbar.LENGTH_LONG).show();
              }else {
             postID = getIntent().getStringExtra("postID");
@@ -195,7 +198,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
         //Post
         dp = findViewById(R.id.dp);
-        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(recycler_view);
         verified = findViewById(R.id.verified);
         name = findViewById(R.id.name);
         username = findViewById(R.id.username);
@@ -231,7 +234,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         more = findViewById(R.id.more);
 
         //Header
-        findViewById(R.id.back).setOnClickListener(v -> {
+        findViewById(back).setOnClickListener(v -> {
             onBackPressed();
             finish();
         });
@@ -297,18 +300,18 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         //Add
-        findViewById(R.id.add).setOnClickListener(v -> {
+        findViewById(add).setOnClickListener(v -> {
             comment_more.show();
         });
         commentMore();
 
         //CommentText
         EditText editText = findViewById(R.id.editText);
-        findViewById(R.id.comment_send).setOnClickListener(v -> {
-            findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        findViewById(comment_send).setOnClickListener(v -> {
+            findViewById(progressBar).setVisibility(View.VISIBLE);
             String mComment = editText.getText().toString();
             if (mComment.isEmpty()){
-                findViewById(R.id.progressBar).setVisibility(View.GONE);
+                findViewById(progressBar).setVisibility(View.GONE);
                 Snackbar.make(main, "Type something", Snackbar.LENGTH_LONG).show();
             }else {
                 String timeStamp = ""+System.currentTimeMillis();
@@ -320,7 +323,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 hashMap.put("type", "text");
                 hashMap.put("pId", postID);
                 FirebaseDatabase.getInstance().getReference("Posts").child(postID).child("Comments").child(timeStamp).setValue(hashMap);
-                findViewById(R.id.progressBar).setVisibility(View.GONE);
+                findViewById(progressBar).setVisibility(View.GONE);
                 Snackbar.make(main, "Comment sent", Snackbar.LENGTH_LONG).show();
                 editText.setText("");
                 addToHisNotification(hisId, "Commented on your post");
@@ -583,18 +586,18 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 if (type.equals("image")){
                     mediaView.setVisibility(View.VISIBLE);
-                    findViewById(R.id.media).setVisibility(View.VISIBLE);
+                    findViewById(media).setVisibility(View.VISIBLE);
                     Picasso.get().load(snapshot.child("meme").getValue().toString()).into(mediaView);
                 }
                 if (type.equals("gif")){
                     mediaView.setVisibility(View.VISIBLE);
-                    findViewById(R.id.media).setVisibility(View.VISIBLE);
+                    findViewById(media).setVisibility(View.VISIBLE);
                     Glide.with(getApplicationContext()).load(snapshot.child("meme").getValue().toString()).thumbnail(0.1f).into(mediaView);
                 }
                 if (type.equals("video")){
                     mediaView.setVisibility(View.VISIBLE);
                     play.setVisibility(View.VISIBLE);
-                    findViewById(R.id.media).setVisibility(View.VISIBLE);
+                    findViewById(media).setVisibility(View.VISIBLE);
                     play.setVideoURI(Uri.parse(snapshot.child("vine").getValue().toString()));
                     play.start();
                     play.setOnPreparedListener(mp -> mp.setLooping(true));
@@ -603,7 +606,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     play.setMediaController(mediaController);
                 }
                 if (type.equals("bg")){
-                    findViewById(R.id.media).setVisibility(View.VISIBLE);
+                    findViewById(media).setVisibility(View.VISIBLE);
                     Picasso.get().load(snapshot.child("meme").getValue().toString()).into(mediaView);
                     bg_text.setLinkText(snapshot.child("text").getValue().toString());
                     bg_text.setOnLinkClickListener((i, s) -> {
@@ -665,7 +668,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     mediaView.setVisibility(View.VISIBLE);
                 }
                 if (type.equals("audio")){
-                    findViewById(R.id.media).setVisibility(View.VISIBLE);
+                    findViewById(media).setVisibility(View.VISIBLE);
                     mediaView.setVisibility(View.GONE);
                     voicePlayerView.setVisibility(View.VISIBLE);
                     voicePlayerView.setAudio(snapshot.child("meme").getValue().toString());
@@ -1179,7 +1182,8 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 });
 
                 //LikeFunctions
-                likeButtonTwo.setOnTouchListener(popup);
+                View.OnTouchListener listner = (View.OnTouchListener)  popup;
+                likeButtonTwo.setOnTouchListener(listner);
                 FirebaseDatabase.getInstance().getReference().child("Likes").child(postID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -1286,7 +1290,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     return false;
                 });
                 share.setOnClickListener(v -> sharePop.show());
-                findViewById(R.id.send).setOnClickListener(v -> sharePop.show());
+                findViewById(send).setOnClickListener(v -> sharePop.show());
 
                 //More
                 Context moreWrapper = new ContextThemeWrapper(CommentActivity.this, R.style.popupMenuStyle);
@@ -1432,10 +1436,10 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 more.setOnClickListener(v -> morePop.show());
 
                 //ProgressBar
-                findViewById(R.id.progressBar).setVisibility(View.GONE);
+                findViewById(progressBar).setVisibility(View.GONE);
 
                 //MediaLayout
-                RelativeLayout mediaViewLayout = findViewById(R.id.media);
+                RelativeLayout mediaViewLayout = findViewById(media);
                 mediaViewLayout.setOnClickListener(v -> {
                     switch (type) {
                         case "image":
@@ -1483,55 +1487,43 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.image:
-                comment_more.cancel();
+        int vId = v.getId();
+        if (vId == R.id.image) {
+            comment_more.cancel();
 
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickImage();
-                    }
-                }
-                else {
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickImage();
                 }
+            } else {
+                pickImage();
+            }
+        } else if (vId == R.id.video) {
+            comment_more.cancel();
 
-                break;
-            case R.id.video:
-                comment_more.cancel();
-
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickVideo();
-                    }
-                }
-                else {
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickVideo();
                 }
-
-                break;
-                case R.id.gif:
-
-                    comment_more.cancel();
-                    Intent s = new Intent(CommentActivity.this, StickersPost.class);
-                    s.putExtra("activity", "comment");
-                    s.putExtra("postID", postID);
-                    startActivity(s);
-
-                    break;
-                    
+            } else {
+                pickVideo();
+            }
+        } else if (vId == R.id.gif) {
+            comment_more.cancel();
+            Intent s = new Intent(CommentActivity.this, StickersPost.class);
+            s.putExtra("activity", "comment");
+            s.putExtra("postID", postID);
+            startActivity(s);
         }
     }
 
@@ -1565,13 +1557,13 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE && data != null){
             Uri img_uri = Objects.requireNonNull(data).getData();
             uploadImage(img_uri);
-            findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+            findViewById(progressBar).setVisibility(View.VISIBLE);
             Snackbar.make(main, "Please wait, sending...", Snackbar.LENGTH_LONG).show();
         }
         if (resultCode == RESULT_OK && requestCode == 130 && data != null){
             Uri img_uri = Objects.requireNonNull(data).getData();
             uploadImage(img_uri);
-            findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+            findViewById(progressBar).setVisibility(View.VISIBLE);
             Snackbar.make(main, "Please wait, sending...", Snackbar.LENGTH_LONG).show();
         }
         if (resultCode == RESULT_OK && requestCode == VIDEO_PICK_CODE && data != null){
@@ -1581,12 +1573,16 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
             retriever.setDataSource(getApplicationContext(), video_uri);
             String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             long timeInMilli = Long.parseLong(time);
-            retriever.release();
+            try {
+                retriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (timeInMilli > 600000){
                 Snackbar.make(main, "Video must be of 10 minutes or less", Snackbar.LENGTH_LONG).show();
             }else {
-                findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+                findViewById(progressBar).setVisibility(View.VISIBLE);
                 Snackbar.make(main, "Please wait, sending...", Snackbar.LENGTH_LONG).show();
                 File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
                 new CommentActivity.CompressVideo().execute("false",video_uri.toString(),file.getPath());
@@ -1639,7 +1635,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 hashMap.put("type", "video");
                 hashMap.put("pId", postID);
                 FirebaseDatabase.getInstance().getReference("Posts").child(postID).child("Comments").child(timeStamp).setValue(hashMap);
-                findViewById(R.id.progressBar).setVisibility(View.GONE);
+                findViewById(progressBar).setVisibility(View.GONE);
                 Snackbar.make(main, "Comment sent", Snackbar.LENGTH_LONG).show();
                 addToHisNotification(hisId, "Commented on your post");
                 notify = true;
@@ -1678,7 +1674,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 hashMap.put("type", "image");
                 hashMap.put("pId", postID);
                 FirebaseDatabase.getInstance().getReference("Posts").child(postID).child("Comments").child(timeStamp).setValue(hashMap);
-                findViewById(R.id.progressBar).setVisibility(View.GONE);
+                findViewById(progressBar).setVisibility(View.GONE);
                 Snackbar.make(main, "Comment sent", Snackbar.LENGTH_LONG).show();
                 addToHisNotification(hisId, "Commented on your post");
                 notify = true;

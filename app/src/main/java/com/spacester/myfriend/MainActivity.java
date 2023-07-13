@@ -60,6 +60,7 @@ import com.spacester.myfriend.reel.ViewReelActivity;
 import com.spacester.myfriend.story.AddStoryActivity;
 import com.spacester.myfriend.watchParty.StartWatchPartyActivity;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -350,26 +351,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @SuppressLint("NonConstantResourceId")
     private final BottomNavigationView.OnNavigationItemSelectedListener navigationSelected =
             item -> {
-                switch (item.getItemId()){
-                    case R.id.nav_home:
-                        selectedFragment = new HomeFragment();
-
-                        break;
-                    case R.id.nav_add:
-                        more.show();
-                        break;
-                    case R.id.nav_reels:
-
-                        Intent intent = new Intent(MainActivity.this, ReelActivity.class);
-                        startActivity(intent);
-
-                        break;
-                    case R.id.nav_chat:
-                        selectedFragment = new ChatFragment();
-                        break;
-                    case R.id.nav_user:
-                        selectedFragment = new ProfileFragment();
-                        break;
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_home) {
+                    selectedFragment = new HomeFragment();
+                } else if (itemId == R.id.nav_add) {
+                    more.show();
+                } else if (itemId == R.id.nav_reels) {
+                    Intent intent = new Intent(MainActivity.this, ReelActivity.class);
+                    startActivity(intent);
+                } else if (itemId == R.id.nav_chat) {
+                    selectedFragment = new ChatFragment();
+                } else if (itemId == R.id.nav_user) {
+                    selectedFragment = new ProfileFragment();
                 }
                 if (selectedFragment != null){
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -465,66 +458,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.post:
-                more.cancel();
-                startActivity(new Intent(MainActivity.this, CreatePostActivity.class));
-                break;
-            case R.id.reel:
-                more.cancel();
-               selectReel();
-                break;
-            case R.id.party:
-                more.cancel();
-                startActivity(new Intent(MainActivity.this, StartWatchPartyActivity.class));
-                break;
-            case R.id.meeting:
-                more.cancel();
-                startActivity(new Intent(MainActivity.this, MeetingActivity.class));
-                break;
-            case R.id.live:
-                more.cancel();
-                String room = String.valueOf(System.currentTimeMillis());
-                Query query = FirebaseDatabase.getInstance().getReference().child("Live").orderByChild("userid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
-                            snapshot.getRef().removeValue();
-                            Intent i = new Intent(getApplicationContext(), GoBroadcastActivity.class);
-                            i.putExtra("name", room);
-                            i.putExtra("type", "host");
-                            startActivity(i);
-                        }else {
-                            Intent i = new Intent(getApplicationContext(), GoBroadcastActivity.class);
-                            i.putExtra("name", room);
-                            i.putExtra("type", "host");
-                            startActivity(i);
-                        }
+        int id = v.getId();
+        if (id == R.id.post) {
+            more.cancel();
+            startActivity(new Intent(MainActivity.this, CreatePostActivity.class));
+        } else if (id == R.id.reel) {
+            more.cancel();
+            selectReel();
+        } else if (id == R.id.party) {
+            more.cancel();
+            startActivity(new Intent(MainActivity.this, StartWatchPartyActivity.class));
+        } else if (id == R.id.meeting) {
+            more.cancel();
+            startActivity(new Intent(MainActivity.this, MeetingActivity.class));
+        } else if (id == R.id.live) {
+            more.cancel();
+            String room = String.valueOf(System.currentTimeMillis());
+            Query query = FirebaseDatabase.getInstance().getReference().child("Live").orderByChild("userid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        snapshot.getRef().removeValue();
+                        Intent i = new Intent(getApplicationContext(), GoBroadcastActivity.class);
+                        i.putExtra("name", room);
+                        i.putExtra("type", "host");
+                        startActivity(i);
+                    } else {
+                        Intent i = new Intent(getApplicationContext(), GoBroadcastActivity.class);
+                        i.putExtra("name", room);
+                        i.putExtra("type", "host");
+                        startActivity(i);
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
-                break;
-            case R.id.podcast:
-                more.cancel();
-                createPod();
-                break;
-            case R.id.sell:
-                more.cancel();
-                startActivity(new Intent(MainActivity.this, PostProductActivity.class));
-                break;
-            case R.id.stories:
-                more.cancel();
-                startActivity(new Intent(MainActivity.this, AddStoryActivity.class));
-                break;
-            case R.id.camera:
-                more.cancel();
-                startActivity(new Intent(MainActivity.this, FaceFilters.class));
-                break;
+                }
+            });
+        } else if (id == R.id.podcast) {
+            more.cancel();
+            createPod();
+        } else if (id == R.id.sell) {
+            more.cancel();
+            startActivity(new Intent(MainActivity.this, PostProductActivity.class));
+        } else if (id == R.id.stories) {
+            more.cancel();
+            startActivity(new Intent(MainActivity.this, AddStoryActivity.class));
+        } else if (id == R.id.camera) {
+            more.cancel();
+            startActivity(new Intent(MainActivity.this, FaceFilters.class));
         }
     }
 
@@ -624,7 +608,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             retriever.setDataSource(getApplicationContext(), video_uri);
             String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             long timeInMilli = Long.parseLong(time);
-            retriever.release();
+            try {
+                retriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (timeInMilli > 60000){
                 Snackbar.make(findViewById(R.id.main), "Video must be of 1 minutes or less", Snackbar.LENGTH_LONG).show();

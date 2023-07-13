@@ -74,6 +74,7 @@ import com.squareup.picasso.Picasso;
 import com.tylersuehr.socialtextview.SocialTextView;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -1378,70 +1379,54 @@ public class CommentGroupActivity extends AppCompatActivity implements View.OnCl
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.image:
-                comment_more.cancel();
+        int id = v.getId();
+        if (id == R.id.image) {
+            comment_more.cancel();
 
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickImage();
-                    }
-                }
-                else {
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickImage();
                 }
+            } else {
+                pickImage();
+            }
+        } else if (id == R.id.video) {
+            comment_more.cancel();
 
-                break;
-            case R.id.video:
-                comment_more.cancel();
-
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickVideo();
-                    }
-                }
-                else {
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickVideo();
                 }
-
-                break;
-                case R.id.gif:
-
-                    comment_more.cancel();
-                    Intent s = new Intent(CommentGroupActivity.this, StickersPost.class);
-                    s.putExtra("activity", "groupcomment");
-                    s.putExtra("postID", postID);
-                    s.putExtra("groupId", groupId);
-                    startActivity(s);
-
-                    break;
-            case R.id.camera:
-
-                //Cam
-                if (ContextCompat.checkSelfPermission(CommentGroupActivity.this, Manifest.permission.CAMERA)
-                        != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(CommentGroupActivity.this, new String[]{
-                            Manifest.permission.CAMERA
-                    }, 99);
-                }else {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent , 130);
-                }
-
-                break;
-
+            } else {
+                pickVideo();
+            }
+        } else if (id == R.id.gif) {
+            comment_more.cancel();
+            Intent s = new Intent(CommentGroupActivity.this, StickersPost.class);
+            s.putExtra("activity", "groupcomment");
+            s.putExtra("postID", postID);
+            s.putExtra("groupId", groupId);
+            startActivity(s);
+        } else if (id == R.id.camera) {//Cam
+            if (ContextCompat.checkSelfPermission(CommentGroupActivity.this, Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(CommentGroupActivity.this, new String[]{
+                        Manifest.permission.CAMERA
+                }, 99);
+            } else {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 130);
+            }
         }
     }
 
@@ -1500,7 +1485,11 @@ public class CommentGroupActivity extends AppCompatActivity implements View.OnCl
             retriever.setDataSource(getApplicationContext(), video_uri);
             String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             long timeInMilli = Long.parseLong(time);
-            retriever.release();
+            try {
+                retriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (timeInMilli > 600000){
                 Snackbar.make(main, "Video must be of 10 minutes or less", Snackbar.LENGTH_LONG).show();

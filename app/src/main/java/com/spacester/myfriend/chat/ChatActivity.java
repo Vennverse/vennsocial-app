@@ -775,161 +775,124 @@ public class ChatActivity extends AppCompatActivity implements GiphyDialogFragme
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.image:
+        int id = v.getId();
+        if (id == R.id.image) {
+            post_more.cancel();
 
-                post_more.cancel();
-
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickImage();
-                    }
-                }
-                else {
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickImage();
                 }
+            } else {
+                pickImage();
+            }
+        } else if (id == R.id.video) {
+            post_more.cancel();
 
-                break;
-            case R.id.video:
-
-                post_more.cancel();
-
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickVideo();
-                    }
-                }
-                else {
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickVideo();
                 }
+            } else {
+                pickVideo();
+            }
+        } else if (id == R.id.audio) {
+            post_more.cancel();
 
-                break;
-            case R.id.audio:
-
-                post_more.cancel();
-
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickAudio();
-                    }
-                }
-                else {
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickAudio();
                 }
-                break;
-            case  R.id.location:
+            } else {
+                pickAudio();
+            }
+        } else if (id == R.id.location) {
+            post_more.cancel();
 
-                post_more.cancel();
+            Intent intent = new Intent(this, MapActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(SimplePlacePicker.API_KEY, "AIzaSyCoezJQ7_58c0bLHXF5wBCjA8-5W0BzJ30");
+            intent.putExtras(bundle);
+            //noinspection deprecation
+            startActivityForResult(intent, SimplePlacePicker.SELECT_LOCATION_REQUEST_CODE);
+        } else if (id == R.id.document) {
+            post_more.cancel();
 
-                Intent intent = new Intent(this, MapActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString(SimplePlacePicker.API_KEY, "AIzaSyCoezJQ7_58c0bLHXF5wBCjA8-5W0BzJ30");
-                intent.putExtras(bundle);
-                //noinspection deprecation
-                startActivityForResult(intent, SimplePlacePicker.SELECT_LOCATION_REQUEST_CODE);
-
-                break;
-
-            case  R.id.document:
-
-                post_more.cancel();
-
-                //Check Permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED){
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }
-                    else {
-                        pickDoc();
-                    }
-                }
-                else {
+            //Check Permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
                     pickDoc();
                 }
+            } else {
+                pickDoc();
+            }
+        } else if (id == R.id.stickers) {
+            post_more.cancel();
 
-                break;
+            Intent s = new Intent(ChatActivity.this, Stickers.class);
+            s.putExtra("type", "user");
+            s.putExtra("id", hisId);
+            startActivity(s);
+        } else if (id == R.id.recorder) {
+            post_more.cancel();
 
-            case  R.id.stickers:
+            check();
 
-                post_more.cancel();
+            if (isShown) {
+                findViewById(R.id.mediaRecord).setVisibility(View.GONE);
+                isShown = false;
+            } else {
+                findViewById(R.id.mediaRecord).setVisibility(View.VISIBLE);
+                isShown = true;
+            }
+        } else if (id == R.id.meeting) {
+            post_more.cancel();
+            startActivity(new Intent(ChatActivity.this, MeetingActivity.class));
+        } else if (id == R.id.watch_party) {
+            post_more.cancel();
 
-                Intent s = new Intent(ChatActivity.this, Stickers.class);
-                s.putExtra("type", "user");
-                s.putExtra("id", hisId);
-                startActivity(s);
-
-                break;
-
-            case  R.id.recorder:
-
-                post_more.cancel();
-
-                check();
-
-                if (isShown){
-                    findViewById(R.id.mediaRecord).setVisibility(View.GONE);
-                    isShown = false;
-                }else {
-                    findViewById(R.id.mediaRecord).setVisibility(View.VISIBLE);
-                    isShown = true;
+            Query q = FirebaseDatabase.getInstance().getReference().child("Party").orderByChild("from").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            q.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (ds.child("from").getValue().toString().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            ds.getRef().removeValue();
+                            startActivity(new Intent(ChatActivity.this, StartWatchPartyActivity.class));
+                        } else {
+                            startActivity(new Intent(ChatActivity.this, StartWatchPartyActivity.class));
+                        }
+                    }
+                    startActivity(new Intent(ChatActivity.this, StartWatchPartyActivity.class));
                 }
 
-                break;
-            case R.id.meeting:
-                post_more.cancel();
-                startActivity(new Intent(ChatActivity.this, MeetingActivity.class));
-                break;
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            case R.id.watch_party:
-                post_more.cancel();
-
-                Query q = FirebaseDatabase.getInstance().getReference().child("Party").orderByChild("from").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                q.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot ds : snapshot.getChildren()){
-                            if (ds.child("from").getValue().toString().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
-                                ds.getRef().removeValue();
-                                startActivity(new Intent(ChatActivity.this, StartWatchPartyActivity.class));
-                            }else {
-                                startActivity(new Intent(ChatActivity.this, StartWatchPartyActivity.class));
-                            }
-                        }
-                        startActivity(new Intent(ChatActivity.this, StartWatchPartyActivity.class));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                break;
-
-            case R.id.camera:
-                post_more.cancel();
-                startActivity(new Intent(ChatActivity.this, FaceFilters.class));
-                break;
-
+                }
+            });
+        } else if (id == R.id.camera) {
+            post_more.cancel();
+            startActivity(new Intent(ChatActivity.this, FaceFilters.class));
         }
     }
 
@@ -1000,7 +963,11 @@ public class ChatActivity extends AppCompatActivity implements GiphyDialogFragme
             retriever.setDataSource(getApplicationContext(), video_uri);
             String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             long timeInMilli = Long.parseLong(time);
-            retriever.release();
+            try {
+                retriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (timeInMilli > 50000){
                 Snackbar.make(main, "Video must be of 5 minutes or less", Snackbar.LENGTH_LONG).show();

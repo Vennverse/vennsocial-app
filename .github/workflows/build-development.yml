@@ -1,0 +1,24 @@
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+name: Build development
+
+on:
+  push:
+    branches:
+      - hotfix/*
+      - fix/*
+      - feature/*
+      - refactor/*
+      - update/*
+      - dev
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Check app development
+    uses: ./.github/workflows/reusable-check-development.yml
+    secrets: inherit
+    with:
+      environment: "staging"

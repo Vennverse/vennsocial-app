@@ -1,0 +1,12 @@
+name: "Setup project JDK"
+description: "Setup project JDK"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: 17
+        # cache: 'gradle'
