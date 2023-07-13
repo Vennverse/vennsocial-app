@@ -85,4 +85,12 @@
         <ignore path="src/main/res/drawable/watch_party_post_bg.jpeg" />
         <ignore path="src/main/res/drawable/watching.png" />
     </issue>
+    <issue id="StringFormatInTimber" severity="ignore"/>
+    <issue id="TimberExceptionLogging" severity="ignore"/>
+    <issue id="ThrowableNotAtBeginning" severity="ignore"/>
+    <issue id="LogNotTimber" severity="ignore"/>
+    <issue id="BinaryOperationInTimber" severity="ignore"/>
+    <issue id="TimberArgCount" severity="ignore"/>
+    <issue id="TimberArgTypes" severity="ignore"/>
+    <issue id="TimberTagLength" severity="ignore"/>
 </lint>

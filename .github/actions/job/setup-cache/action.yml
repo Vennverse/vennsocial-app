@@ -1,0 +1,14 @@
+name: "Setup cache"
+description: "Setup cache"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.konan
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-

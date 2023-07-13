@@ -1,0 +1,13 @@
+name: "Gradle checks"
+description: "Gradle checks"
+inputs:
+  shell:
+    required: true
+    description: "Shell to use depending on runner os"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Gradle checks
+      run: ./gradlew check --stacktrace
+      shell: ${{ inputs.shell }}

@@ -1,0 +1,52 @@
+name: Project development checks
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        description: "Environment to build for"
+        type: string
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    env:
+      sed: "sed"
+      shell: "bash"
+    outputs:
+      apkPath: ${{ steps.uploadApk.outputs.filePath }}
+      apkName: ${{ steps.uploadApk.outputs.fileName }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Init JDK
+        uses: ./.github/actions/job/setup-jdk
+
+      - name: Init cache
+        uses: ./.github/actions/job/setup-cache
+
+      - name: Init gradle
+        uses: ./.github/actions/gradle/setup-gradle
+
+#      - name: Kotlin lint
+#        uses: ./.github/actions/gradle/ktlint
+#        with:
+#          shell: ${{ env.shell }}
+
+      - name: Unit tests
+        uses: ./.github/actions/gradle/unit-tests
+        with:
+          shell: ${{ env.shell }}
+
+      - name: All checks
+        uses: ./.github/actions/gradle/check
+        with:
+          shell: ${{ env.shell }}
+
+      - name: Build
+        uses: ./.github/actions/gradle/build-project
+        with:
+          shell: ${{ env.shell }}

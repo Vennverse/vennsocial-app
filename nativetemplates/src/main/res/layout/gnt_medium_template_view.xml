@@ -69,7 +69,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/content"
             android:contentDescription="TODO"
-            tools:ignore="ContentDescription,HardcodedText" />
+            tools:ignore="ContentDescription,HardcodedText"
+            android:layout_marginLeft="@dimen/gnt_default_margin"
+            android:layout_marginRight="@dimen/gnt_no_margin" />
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="@dimen/gnt_no_size"
             android:layout_height="@dimen/gnt_no_size"
@@ -138,7 +140,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-               tools:ignore="ContentDescription,HardcodedText">
+               tools:ignore="ContentDescription,HardcodedText"
+                android:layout_marginLeft="@dimen/gnt_no_margin"
+                android:layout_marginRight="@dimen/gnt_default_margin">
             </TextView>
             <RatingBar
                 android:id="@+id/rating_bar"
