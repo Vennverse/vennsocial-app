@@ -1,5 +1,6 @@
 package data.tatum
 
+import data.tatum.responses.CreatePrivateKeyResponse
 import data.tatum.responses.CreatePublicAddressResponse
 import data.tatum.responses.CreateWalletResponse
 import io.ktor.client.*
@@ -48,9 +49,9 @@ class Tatum {
         walletType: WalletType,
         mnemonic: String,
         index: Int
-    ) {
+    ): CreatePrivateKeyResponse {
         println("[LOG] creating a ${walletType.apiWalletType()} private key, number: $index")
-        client.post("https://api.tatum.io/v3/${walletType.apiWalletType()}/wallet/priv") {
+        return client.post("https://api.tatum.io/v3/${walletType.apiWalletType()}/wallet/priv") {
             header("content-type", "application/json")
             header("x-api-key", "2518f45b-2618-40e9-b965-eb719ccf2426")
             setBody(
@@ -59,6 +60,6 @@ class Tatum {
                     put("index", index)
                 },
             )
-        }
+        }.body()
     }
 }
