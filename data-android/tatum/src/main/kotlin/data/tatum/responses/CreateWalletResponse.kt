@@ -4,7 +4,11 @@ import kotlinx.serialization.SerialName
 
 @kotlinx.serialization.Serializable
 data class CreateWalletResponse(
-    @SerialName("xpub")
-    val publicKey: String,
+    val xpub: String,
     val mnemonic: String,
-)
+) {
+
+    override fun toString(): String {
+        return "x pub: $xpub\nmnemonic: $mnemonic"
+    }
+}
