@@ -3,6 +3,7 @@ plugins {
     alias(app.plugins.android.library) apply false
     alias(app.plugins.google.play.services) apply false
     alias(app.plugins.kotlin.android) apply false
+    alias(app.plugins.kotlin.serialization) apply false
     alias(app.plugins.imgly.sdk) apply false
 }
 
