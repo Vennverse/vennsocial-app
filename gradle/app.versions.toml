@@ -11,7 +11,7 @@ androidxTestCoreKtx = "1.5.0"
 androidxTestRules = "1.5.0"
 androidxTestRunner = "1.5.2"
 
-coinbaseWalletAndroid = "1.0.3"
+coinbaseWalletAndroid = "1.0.4"
 
 glide = "4.15.1"
 
@@ -22,7 +22,6 @@ javaCompatibility = "17"
 koin = "3.1.3"
 koinAndroid = "3.1.3"
 koinKsp = "1.2.0"
-
 
 kotlin = "1.8.20"
 googleKsp = "1.8.10-1.0.9" # this refernces kotlin version

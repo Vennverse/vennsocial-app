@@ -3,6 +3,7 @@ package com.spacester.myfriend
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import data.coinbase.wallet.CoinbaseWalletSdk
 import io.stipop.Stipop
 import io.stipop.StipopDelegate
 import io.stipop.extend.StipopImageView
@@ -11,9 +12,17 @@ import io.stipop.model.SPSticker
 
 class Stickers : AppCompatActivity(), StipopDelegate {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stickers)
+
+         val coinBase = CoinbaseWalletSdk(
+            applicationContext = applicationContext,
+            appLinkDomain = "https://myfriend.spacester.org"
+        )
+        coinBase.init(this)
+        coinBase.establishConnection()
 
         val stipopIV = findViewById<StipopImageView>(R.id.stipopIV)
 
