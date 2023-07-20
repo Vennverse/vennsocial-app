@@ -13,6 +13,7 @@ class AndroidModuleConventionPlugin: Plugin<Project> {
     override fun apply(project: Project) = with(project) {
         pluginManager.apply("com.android.library")
         pluginManager.apply("kotlin-android")
+        pluginManager.apply(catalog.plugin("kotlin-serialization"))
 
         val library = extensions.getByType<LibraryExtension>()
 
