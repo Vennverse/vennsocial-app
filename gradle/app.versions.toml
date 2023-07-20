@@ -49,6 +49,8 @@ google-play-services-gradle-plugin = { group = "com.google.gms", name = "google-
 imgly-gradle-plugin = { group = "ly.img.android.pesdk", name = "plugin", version.ref = "imgly" }
 
 koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinKsp" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
 
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koinAndroid" }
 koin-android-compat = { group = "io.insert-koin", name = "koin-android-compat", version.ref = "koinAndroid" }
