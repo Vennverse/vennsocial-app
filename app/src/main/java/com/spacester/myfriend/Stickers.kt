@@ -11,7 +11,6 @@ import io.stipop.model.SPSticker
 
 class Stickers : AppCompatActivity(), StipopDelegate {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stickers)

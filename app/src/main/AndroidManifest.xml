@@ -27,8 +27,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
-
-
     <queries>
         <intent>
             <action android:name="com.google.android.youtube.api.service.START" />
@@ -108,18 +106,7 @@
              />
         <activity
             android:name=".Stickers"
-            android:exported="true">
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="myfriend.spacester.org"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
+             />
         <activity
             android:name=".admin.WarnGroupActivity"
              />
@@ -482,11 +469,5 @@
             </intent-filter>
         </service>
     </application>
-
-    <queries>
-        <package android:name="org.toshi" />
-        <package android:name="org.toshi.alpha" />
-        <package android:name="org.toshi.debugger" />
-    </queries>
 
 </manifest>
