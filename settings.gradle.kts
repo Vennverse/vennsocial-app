@@ -32,3 +32,6 @@ include(":nativetemplates")
 include(":deepar")
 include(":app")
 include(":SimplePlacePicker-master")
+
+include(":data-android-coinbase")
+project(":data-android-coinbase").projectDir = file("data-android/coinbase")
