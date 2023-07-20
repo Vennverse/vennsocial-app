@@ -133,7 +133,7 @@ android {
     }
     packagingOptions {
         resources {
-            excludes += setOf("META-INF/NOTICE.md", "META-INF/LICENSE.md")
+            excludes += setOf("META-INF/NOTICE.md", "META-INF/LICENSE.md", "META-INF/versions**")
         }
     }
     kotlinOptions {
@@ -251,4 +251,6 @@ dependencies {
     implementation("com.github.nguyencse:urlembeddedview:1.0.2")
     implementation("com.sun.mail:android-mail:1.6.7")
     implementation("com.sun.mail:android-activation:1.6.7")
+
+    implementation(project(":data-android-coinbase"))
 }
