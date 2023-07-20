@@ -11,6 +11,8 @@ androidxTestCoreKtx = "1.5.0"
 androidxTestRules = "1.5.0"
 androidxTestRunner = "1.5.2"
 
+coinbaseWalletAndroid = "1.0.3"
+
 glide = "4.15.1"
 
 imgly = "10.7.2"
@@ -40,6 +42,8 @@ androidx-core = { group = "androidx.core", name = "core", version.ref = "android
 androidx-test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "androidxTestCoreKtx" }
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref ="androidxTestRunner" }
+
+coinbase-wallet-android = { group = "com.coinbase", name = "coinbase-wallet-sdk", version.ref = "coinbaseWalletAndroid" }
 
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
