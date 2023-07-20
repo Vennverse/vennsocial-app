@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("app-build-logic")
     repositories {
         google()
         mavenCentral()
@@ -32,3 +33,6 @@ include(":nativetemplates")
 include(":deepar")
 include(":app")
 include(":SimplePlacePicker-master")
+
+include(":data-android-tatum")
+project(":data-android-tatum").projectDir = file("data-android/tatum")
